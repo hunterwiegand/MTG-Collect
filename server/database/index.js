@@ -9,7 +9,7 @@ const uri = process.env.MONGODB_URI || "mongodb://localhost/mtg-collect"
 mongoose.connect(uri).then(
     () => { 
         /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ 
-        console.log('Connected to Mongo');
+        console.log('Connected to Mongo:', uri);
         
     },
     err => {
