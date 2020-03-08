@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 8080;
 // Route requires
 const user = require('./routes/user')
 
+
 // MIDDLEWARE
 app.use(morgan('dev'))
 app.use(
