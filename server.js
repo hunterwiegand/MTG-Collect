@@ -2,11 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const session = require('express-session');
-const dbConnection = require('./database') 
+const dbConnection = require('./database')
 const MongoStore = require('connect-mongo')(session)
 const passport = require('./passport');
 const app = express();
 const PORT = process.env.PORT || 8080;
+const path = require("path");
 // Route requires
 const user = require('./routes/user')
 
@@ -37,6 +38,16 @@ app.use(passport.session()) // calls the deserializeUser
 
 // Routes
 app.use('/user', user)
+
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static(path.join(__dirname, 'client/build')))
+
+	app.get("*", (req,res) => {
+		res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+	})
+};
+
+
 
 // Starting Server 
 app.listen(PORT, () => {
