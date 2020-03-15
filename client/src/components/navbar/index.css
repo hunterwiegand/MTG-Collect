@@ -1,0 +1,16 @@
+.App-header {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    font-size: calc(6px + 2vmin);
+    color: white;
+  }
+  .btn-link {
+    color: #61dafb;
+    margin-right: 2%;
+  }
+
+  .btn-link:visited {
+      color:  #61dafb
+  }
