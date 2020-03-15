@@ -1,44 +1,11 @@
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Switch, HashRouter } from "react-router-dom";
-// import logo from './logo.svg';
-// import './App.css';
-// import Signup from "./components/sign-up";
 
-// function App() {
-//   return (
-
-//     // <div className="App">
-//     //   <header className="App-header">
-//     //     <img src={logo} className="App-logo" alt="logo" />
-//     //     <p>
-//     //       Edit <code>src/App.js</code> and save to reload.
-//     //     </p>
-//     //     <a
-//     //       className="App-link"
-//     //       href="https://reactjs.org"
-//     //       target="_blank"
-//     //       rel="noopener noreferrer"
-//     //     >
-//     //       Learn React
-//     //     </a>
-//     //   </header>
-//     // </div>
-//     // <Router>
-//     //   <Route path="/signup" render={() => <Signup />} />
-//     // </Router>
-
-
-//   );
-// }
-
-// export default App;
 import React, { Component } from 'react';
 import axios from 'axios'
 import { BrowserRouter as Router, Route, Switch, HashRouter } from "react-router-dom";
 // components
 import Signup from './components/sign-up'
 import LoginForm from './components/login-form'
-import Navbar from './components/navbar'
+import Navbar from './components/navbar/index.js'
 import Home from './components/home'
 
 class App extends Component {
@@ -88,6 +55,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <Navbar updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
+          
           {/* greet user if logged in: */}
           {this.state.loggedIn &&
             <p>Join the party, {this.state.username}!</p>
@@ -95,7 +63,12 @@ class App extends Component {
           {/* Routes to different components */}
           <Route
             exact path="/"
-            component={Home} />
+            render = {() =>
+              <Home
+                loggedIn = {this.state.loggedIn}
+                />
+            }
+            />
           <Route
             path="/login"
             render={() =>
