@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import { BrowserRouter as Router, Route, Switch, HashRouter } from "react-router-dom";
 // components
-import Signup from './components/sign-up'
-import LoginForm from './components/login-form'
+import Signup from './pages/sign-up'
+import LoginForm from './pages/login-form'
 import Navbar from './components/navbar/index.js'
-import Home from './components/home'
+import Home from './pages/home'
+import Collection from "./components/collection/index.js"
+import Add_Cards from "./components/add_cards/index.js"
+import Search_Cards from "./components/search_cards/index.js"
 
 class App extends Component {
   constructor() {
@@ -57,9 +60,9 @@ class App extends Component {
           <Navbar updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
           
           {/* greet user if logged in: */}
-          {this.state.loggedIn &&
+          {/* {this.state.loggedIn &&
             <p>Join the party, {this.state.username}!</p>
-          }
+          } */}
           {/* Routes to different components */}
           <Route
             exact path="/"
@@ -80,6 +83,21 @@ class App extends Component {
             path="/signup"
             render={() =>
               <Signup />}
+          />
+          <Route
+            path="/collection"
+            render={() =>
+              <Collection />}
+          />
+          <Route
+            path="/add-cards"
+            render={() =>
+              <Add_Cards />}
+          />
+          <Route
+            path="/search-cards"
+            render={() =>
+              <Search_Cards />}
           />
 
         </div>
