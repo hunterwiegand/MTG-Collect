@@ -1,15 +1,15 @@
 
 import React, { Component } from 'react';
 import axios from 'axios'
-import { BrowserRouter as Router, Route, Switch, HashRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 // components
 import Signup from './pages/sign-up'
 import LoginForm from './pages/login-form'
 import Navbar from './components/navbar/index.js'
 import Home from './pages/home'
-import Collection from "./components/collection/index.js"
-import Add_Cards from "./components/add_cards/index.js"
-import Search_Cards from "./components/search_cards/index.js"
+import Collection from "./pages/collection.js"
+import AddCards from "./pages/add-cards"
+import SearchCards from "./pages/search-cards.js"
 
 class App extends Component {
   constructor() {
@@ -34,17 +34,17 @@ class App extends Component {
 
   getUser() {
     axios.get('/user/').then(response => {
-      console.log('Get user response: ')
-      console.log(response.data)
+      // console.log('Get user response: ')
+      // console.log(response.data)
       if (response.data.user) {
-        console.log('Get User: There is a user saved in the server session: ')
+        // console.log('Get User: There is a user saved in the server session: ')
 
         this.setState({
           loggedIn: true,
           username: response.data.user.username
         })
       } else {
-        console.log('Get user: no user');
+        // console.log('Get user: no user');
         this.setState({
           loggedIn: false,
           username: null
@@ -92,12 +92,12 @@ class App extends Component {
           <Route
             path="/add-cards"
             render={() =>
-              <Add_Cards />}
+              <AddCards />}
           />
           <Route
             path="/search-cards"
             render={() =>
-              <Search_Cards />}
+              <SearchCards />}
           />
 
         </div>

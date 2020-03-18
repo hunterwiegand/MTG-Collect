@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import { Col, Row, Container } from "../Grid";
-import Form from "../Form"
-import './styles.css';
-import API from '../../utils/API';
+import { Container } from "../components/Grid";
+import Form from "../components/Form"
 import axios from 'axios';
 
 class Add_Cards extends Component {
@@ -96,7 +94,7 @@ class Add_Cards extends Component {
                     oracle_text: data.oracle_text,
                     type: data.type,
                     cmc: data.cmc,
-                    imageUrl: data.image_uris.small
+                    imageUrl: data.image_uris.normal
                 })
             })
             // If there is an error while handling the request, return the error in json format
@@ -116,7 +114,7 @@ class Add_Cards extends Component {
     handleInputChange = event => {
         // Create variables name and value from the event passed in as the parameter
         // name wil be the data attribute, and the value will be it's value
-        const { name, value } = event.target;
+        const { value } = event.target;
         // Setting the state to reflect the input changes
         this.setState({
             q: value
@@ -136,7 +134,9 @@ class Add_Cards extends Component {
                     q={this.state.q}
                 />
                 <img src={this.state.imageUrl}></img>
-                <h1>{this.state.text}</h1>
+
+
+                
             </Container>
         )
     }
