@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Container } from "../components/Grid";
 import Form from "../components/Form"
+import AddCards from "../components/AddCards"
 import axios from 'axios';
 
 class Add_Cards extends Component {
-
 
     state = {
         q: "",
@@ -17,76 +17,23 @@ class Add_Cards extends Component {
         oracle_text: "",
         cmc: "",
         imageUrl: "",
-        legalities: [
-            {
-                format: "Commander",
-                legality: ""
-            },
-            {
-                format: "Modern",
-                legality: ""
-            },
-            {
-                format: "Standard",
-                legality: ""
-            }
-        ]
+        message: "Search for a card!"
     }
 
+    // Function for finding card info
     getCard = () => {
-
-        // let q = this.state.q.replace(/\s/g, "%20");
-        // let params = "%22" + q + "%22";
-        // MTG-API (This takes 20 sec for card info)
-        // const query = "https://api.magicthegathering.io/v1/cards?name=" + params;
-
-        // https://api.scryfall.com/cards/named?exact=black+lotus
-
-        // const headers = {
-        //     "Total-Count": "3"
-        // }
-
-        // axios
-        //     .get(query, { headers })
-        //     .then(res => {
-        //         let data = res.data.cards[0];
-        //         this.setState({
-        //             quantity: data.quantity,
-        //             color: data.color,
-        //             manaCost: data.manaCost,
-        //             name: data.name,
-        //             subtypes: data.subtypes,
-        //             rarity: data.rarity,
-        //             text: data.text,
-        //             type: data.type,
-        //             cmc: data.cmc,
-        //             imageUrl: data.imageUrl
-        //         })
-        //     }).then(
-        //         console.log("text: ", this.state.text)
-        //     )
-        //     // If there is an error while handling the request, return the error in json format
-        //     .catch(err =>
-        //         console.log("No cards found"));
-
-
+        // Regex to replace global spaces with "+"
         let params = this.state.q.replace(/\s/g, "+");
-
+        // Build our http request query
         const query = "https://api.scryfall.com/cards/named?exact=" + params;
 
-        console.log(query);
-
-        const headers = {
-            
-        }
-
+        // Axios call to hit our API and set our state variables to the data we get from the API
         axios
-            .get(query, { headers })
+            .get(query)
             .then(res => {
                 let data = res.data;
-                console.log(res.data);
                 this.setState({
-                    colors: data.colors, 
+                    colors: data.colors,
                     mana_cost: data.mana_cost,
                     name: data.name,
                     type_line: data.type_line,
@@ -97,16 +44,32 @@ class Add_Cards extends Component {
                     imageUrl: data.image_uris.normal
                 })
             })
-            // If there is an error while handling the request, return the error in json format
+            // If there is an error while handling the request set the state message to inform the user to try again
             .catch(err =>
                 console.log("No cards found"));
+            this.setState({
+            message: "No card was found, try again"
+        });
 
 
     };
 
+    // Function for when the user submits the form
     handleFormSubmit = event => {
         event.preventDefault();
-        console.log("before getCard()")
+        // Empty out the current state for the new search
+        this.setState({
+            quantity: "",
+            colors: [],
+            mana_cost: "",
+            name: "",
+            type_line: "",
+            rarity: "",
+            oracle_text: "",
+            cmc: "",
+            imageUrl: "",
+        })
+        // Run function for find cards using the API
         this.getCard();
     };
 
@@ -121,22 +84,30 @@ class Add_Cards extends Component {
         });
     };
 
-    componentDidMount = () => {
-        console.log("state", this.state);
-    }
-
     render() {
+        // Set variable to see if an image is in our state
+        let isLoaded = false;
+        if (this.state.imageUrl != "") {
+            isLoaded = true;
+        };
         return (
             <Container>
+                {/* Load our Form component to search cards */}
                 <Form
                     handleInputChange={this.handleInputChange}
                     handleFormSubmit={this.handleFormSubmit}
                     q={this.state.q}
                 />
-                <img src={this.state.imageUrl}></img>
 
-
-                
+                {/* If an image is loaded, show component to add cards to our DB */}
+                {isLoaded ? (
+                    <AddCards
+                        img={this.state.imageUrl}
+                    />
+                // Otherwise load our message to user
+                ) : (
+                        <h1>{this.state.message}</h1>
+                    )}
             </Container>
         )
     }
