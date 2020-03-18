@@ -11,13 +11,12 @@ class Add_Cards extends Component {
     state = {
         q: "",
         quantity: "",
-        color: "",
-        manaCost: "",
+        colors: [],
+        mana_cost: "",
         name: "",
-        subtypes: "",
+        type_line: "",
         rarity: "",
-        text: "",
-        type: "",
+        oracle_text: "",
         cmc: "",
         imageUrl: "",
         legalities: [
@@ -37,47 +36,73 @@ class Add_Cards extends Component {
     }
 
     getCard = () => {
-        // Single word cards need %22<name>%22
-        // Multi word cards need %22<firstWord>%20<secondWord>%22
-        // API.getCard(this.state.q)
-        //     // .then(res => 
-        //     //     this.setState({
 
-        //     //     }))
-        //     .then(res =>
-        //         console.log(res.data)
-        //     ).catch(() =>
-        //         console.log("No cards found")
+        // let q = this.state.q.replace(/\s/g, "%20");
+        // let params = "%22" + q + "%22";
+        // MTG-API (This takes 20 sec for card info)
+        // const query = "https://api.magicthegathering.io/v1/cards?name=" + params;
+
+        // https://api.scryfall.com/cards/named?exact=black+lotus
+
+        // const headers = {
+        //     "Total-Count": "3"
+        // }
+
+        // axios
+        //     .get(query, { headers })
+        //     .then(res => {
+        //         let data = res.data.cards[0];
+        //         this.setState({
+        //             quantity: data.quantity,
+        //             color: data.color,
+        //             manaCost: data.manaCost,
+        //             name: data.name,
+        //             subtypes: data.subtypes,
+        //             rarity: data.rarity,
+        //             text: data.text,
+        //             type: data.type,
+        //             cmc: data.cmc,
+        //             imageUrl: data.imageUrl
+        //         })
+        //     }).then(
+        //         console.log("text: ", this.state.text)
         //     )
-        const params = "%22" + this.state.q + "%22";
+        //     // If there is an error while handling the request, return the error in json format
+        //     .catch(err =>
+        //         console.log("No cards found"));
 
-        const query = "https://api.magicthegathering.io/v1/cards?name=" + params;
+
+        let params = this.state.q.replace(/\s/g, "+");
+
+        const query = "https://api.scryfall.com/cards/named?exact=" + params;
 
         console.log(query);
+
         const headers = {
-            "Total-Count": "3"
+            
         }
 
         axios
             .get(query, { headers })
             .then(res => {
-                let data = res.data.cards[0];
+                let data = res.data;
+                console.log(res.data);
                 this.setState({
-                    quantity: data.quantity,
-                    color: data.color,
-                    manaCost: data.manaCost,
+                    colors: data.colors, 
+                    mana_cost: data.mana_cost,
                     name: data.name,
-                    subtypes: data.subtypes,
+                    type_line: data.type_line,
                     rarity: data.rarity,
-                    text: data.text,
+                    oracle_text: data.oracle_text,
                     type: data.type,
                     cmc: data.cmc,
-                    imageUrl: data.imageUrl
+                    imageUrl: data.image_uris.small
                 })
             })
             // If there is an error while handling the request, return the error in json format
             .catch(err =>
                 console.log("No cards found"));
+
 
     };
 
@@ -111,6 +136,7 @@ class Add_Cards extends Component {
                     q={this.state.q}
                 />
                 <img src={this.state.imageUrl}></img>
+                <h1>{this.state.text}</h1>
             </Container>
         )
     }
