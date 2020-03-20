@@ -74,7 +74,7 @@ class Add_Cards extends Component {
         .then(response => {
             console.log(response)
             if (!response.data.errmsg) {
-                console.log("card added")
+                console.log("card send to DB")
             } else {
                 console.log('Error adding card')
             }
