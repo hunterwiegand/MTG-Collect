@@ -58,7 +58,32 @@ class Add_Cards extends Component {
     addCard = () => {
         console.log("name: ", this.state.name);
         console.log("amount: ", this.state.quantity);
-    }
+
+        // Request to server to add card
+        axios.post("/collection/", {
+            quantity: this.state.quantity,
+            colors: this.state.colors,
+            mana_cost: this.state.mana_cost,
+            name: this.state.name,
+            type_line: this.state.type_line,
+            rarity: this.state.rarity,
+            oracle_text: this.state.oracle_text,
+            cmc: this.state.cmc,
+            imageUrl: this.state.imageUrl
+        })
+        .then(response => {
+            console.log(response)
+            if (!response.data.errmsg) {
+                console.log("card added")
+            } else {
+                console.log('Error adding card')
+            }
+        }).catch(error => {
+            console.log('card error: ')
+            console.log(error)
+
+        });
+    };
 
     // Function for when the user submits the form
     handleFormSubmit = event => {
@@ -83,7 +108,7 @@ class Add_Cards extends Component {
     handleInputChange = event => {
         // Create variables name and value from the event passed in as the parameter
         // name wil be the data attribute, and the value will be it's value
-        const { name, value } = event.target;
+        const { value } = event.target;
         // Setting the state to reflect the input changes
         this.setState({
             q: value
@@ -93,7 +118,7 @@ class Add_Cards extends Component {
     // Function for when the user submits the Add button
     handleAddSubmit = event => {
         event.preventDefault();
-       
+
         // Run function for find cards using the API
         this.addCard();
 
@@ -126,7 +151,7 @@ class Add_Cards extends Component {
     render() {
         // Set variable to see if an image is in our state
         let isLoaded = false;
-        if (this.state.imageUrl != "") {
+        if (this.state.imageUrl !== "") {
             isLoaded = true;
         };
         return (
