@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import { Col, Row, Container } from "../Grid";
-import Form from "../Form"
-import './styles.css';
-import API from '../../utils/API';
+import { Col, Row, Container } from "../components/Grid";
+import Form from "../components/Form"
 import axios from 'axios';
 
 class Add_Cards extends Component {
@@ -101,6 +99,16 @@ class Add_Cards extends Component {
                 />
                 <img src={this.state.imageUrl}></img>
                 <h1>{this.state.text}</h1>
+
+                 {/* If an image is loaded, show component to add cards to our DB */}
+                 {/* {isLoaded ? (
+                    <AddCards
+                        img={this.state.imageUrl}
+                    />
+                // Otherwise load our message to user
+                ) : (
+                        <h1>{this.state.message}</h1>
+                    )} */}
             </Container>
         )
     }

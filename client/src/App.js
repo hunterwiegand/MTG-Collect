@@ -8,7 +8,7 @@ import LoginForm from './pages/login-form'
 import Navbar from './components/navbar/index.js'
 import Home from './pages/home'
 import Collection from "./components/collection/index.js"
-import Add_Cards from "./components/add_cards/index.js"
+import Add_Cards from "./pages/add-cards.js"
 import Search_Cards from "./components/search_cards/index.js"
 
 class App extends Component {
