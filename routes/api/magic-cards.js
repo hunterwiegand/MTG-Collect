@@ -1,9 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const Collection = require('../../database/models/collection')
+const User = require('../../database/models/user')
+const Card = require("../../database/models/card")
+const mongoose = require("mongoose")
+mongoose.promise = Promise
 
 router.post('/', (req, res) => {
-    console.log("Collection add");
+    console.log("Card add");
 
     const { 
       quantity, 
@@ -14,22 +17,15 @@ router.post('/', (req, res) => {
       rarity,
       oracle_text,
       cmc,
-      imageUrl
+      imageUrl,
+      username
     } = req.body
 
     console.log(req.body)
 
     // ADD VALIDATION
-    Collection.findOne({ name: name }, (err, collection) => {
-        if (err) {
-            console.log('Collection.js post error: ', err)
-        } else if (collection) {
-            res.json({
-                error: `Sorry, already a card with the name: ${name}`
-            })
-        }
-        else {
-            const newCard = new Collection({
+    User.findOne({ username: username }, () => {
+            const newCard = new Card({
               quantity: quantity,
               colors: colors,
               mana_cost: mana_cost,
@@ -40,12 +36,9 @@ router.post('/', (req, res) => {
               cmc: cmc,
               imageUrl: imageUrl
             })
-            newCard.save((err, savedCard) => {
-                if (err) return res.json(err)
-                res.json(savedCard)
-            })
+                User.cards.push(newCard);
         }
-    })
+    )
 })
 
 module.exports = router;
