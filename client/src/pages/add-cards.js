@@ -57,9 +57,6 @@ class Add_Cards extends Component {
 
     // Function to add card to collection
     addCard = () => {
-        console.log("name: ", this.state.name);
-        console.log("amount: ", this.state.quantity);
-        console.log("username: ", this.state.username);
 
         // Request to server to add card
         axios.post("/collection/", {
