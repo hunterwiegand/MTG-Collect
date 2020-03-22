@@ -17,7 +17,8 @@ class Add_Cards extends Component {
         oracle_text: "",
         cmc: "",
         imageUrl: "",
-        message: "Search for a card!"
+        message: "Search for a card!",
+        username: this.props.username
     }
 
     // Function for finding card info
@@ -58,6 +59,7 @@ class Add_Cards extends Component {
     addCard = () => {
         console.log("name: ", this.state.name);
         console.log("amount: ", this.state.quantity);
+        console.log("username: ", this.state.username);
 
         // Request to server to add card
         // axios.post("/collection/", {
