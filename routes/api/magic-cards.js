@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
       });
 
     let conditions = { username: req.body.username };
-    let update = { cards: newCard };
+    let update =  { $push: { cards: newCard } } ;
     let options = { multi: true };
 
     User.update(conditions, update, options, callback);
