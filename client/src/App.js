@@ -82,7 +82,9 @@ class App extends Component {
           <Route
             path="/collection"
             render={() =>
-              <Collection />}
+              <Collection 
+              username={this.state.username}
+              />}
           />
           <Route
             path="/add-cards"

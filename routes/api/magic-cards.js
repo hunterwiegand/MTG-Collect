@@ -7,6 +7,9 @@ mongoose.promise = Promise
 router.post('/', (req, res) => {
   console.log("Card add");
 
+  // TODO 
+  // Validate if the card is already entered to avoid duplicates
+
   let {
     quantity,
     colors,
@@ -43,5 +46,17 @@ router.post('/', (req, res) => {
     if (err) throw err;
   }
 });
+
+router.post("/get-cards", (req, res) => {
+  console.log("card get route");
+  console.log("req", req.user.username);
+
+  User.find( {username: req.user.username })
+  .then( data => {
+    console.log(data)
+    res.send(data);
+  });
+
+})
 
 module.exports = router;

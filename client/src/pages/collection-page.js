@@ -1,13 +1,21 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Route, Link } from 'react-router-dom'
-import axios from 'axios'
+import React, { Component } from 'react';
+import { Container } from "../components/Grid";
+import axios from 'axios';
+import Card_Layout from "../components/Card_Layout";
 
 class Collection extends Component {
 
+    state = {
+        username: this.props.username
+    }
+
     render() {
         return(
-            <h1>Collection</h1>
+            <Container>
+                <Card_Layout
+                    username={this.state.username}>
+                </Card_Layout>
+            </Container>
         )
     }
 }
