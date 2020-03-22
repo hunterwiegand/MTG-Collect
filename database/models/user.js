@@ -1,13 +1,15 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcryptjs');
+const CardSchema = require("./card");
 mongoose.promise = Promise
 
 // Define userSchema
 const userSchema = new Schema({
 
 	username: { type: String, unique: true, required: true },
-	password: { type: String, unique: false, required: true }
+	password: { type: String, unique: false, required: true },
+	cards: { type: [CardSchema]}
 
 })
 
