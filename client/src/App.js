@@ -7,9 +7,9 @@ import Signup from './pages/sign-up'
 import LoginForm from './pages/login-form'
 import Navbar from './components/navbar/index.js'
 import Home from './pages/home'
-import Collection from "./components/collection/index.js"
+import Collection from "./pages/collection-page.js"
 import Add_Cards from "./pages/add-cards.js"
-import Search_Cards from "./components/search_cards/index.js"
+import Search_Cards from "./pages/search-cards-page.js"
 
 class App extends Component {
   constructor() {
@@ -58,11 +58,6 @@ class App extends Component {
       <Router>
         <div className="App">
           <Navbar updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
-          
-          {/* greet user if logged in: */}
-          {/* {this.state.loggedIn &&
-            <p>Join the party, {this.state.username}!</p>
-          } */}
           {/* Routes to different components */}
           <Route
             exact path="/"
@@ -87,7 +82,9 @@ class App extends Component {
           <Route
             path="/collection"
             render={() =>
-              <Collection />}
+              <Collection 
+              username={this.state.username}
+              />}
           />
           <Route
             path="/add-cards"

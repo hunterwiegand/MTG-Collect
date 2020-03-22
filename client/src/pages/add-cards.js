@@ -42,7 +42,7 @@ class Add_Cards extends Component {
                     oracle_text: data.oracle_text,
                     type: data.type,
                     cmc: data.cmc,
-                    imageUrl: data.image_uris.normal
+                    imageUrl: data.image_uris.small
                 })
             })
             // If there is an error while handling the request set the state message to inform the user to try again
@@ -57,9 +57,6 @@ class Add_Cards extends Component {
 
     // Function to add card to collection
     addCard = () => {
-        console.log("name: ", this.state.name);
-        console.log("amount: ", this.state.quantity);
-        console.log("username: ", this.state.username);
 
         // Request to server to add card
         axios.post("/collection/", {
