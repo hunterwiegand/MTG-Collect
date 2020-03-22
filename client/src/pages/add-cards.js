@@ -42,7 +42,7 @@ class Add_Cards extends Component {
                     oracle_text: data.oracle_text,
                     type: data.type,
                     cmc: data.cmc,
-                    imageUrl: data.image_uris.normal
+                    imageUrl: data.image_uris.small
                 })
             })
             // If there is an error while handling the request set the state message to inform the user to try again

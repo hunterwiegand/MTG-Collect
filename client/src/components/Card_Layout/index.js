@@ -11,8 +11,9 @@ class Card_Layout extends Component {
         };
     }
 
+    // Triggers when component mounts to teh DOM
     componentDidMount() {
-        console.log("username: ", this.props.username)
+        // Axios post to retrieve user's cards
         axios.post("/collection/get-cards", {
             params: {
                 username: this.props.username
@@ -22,17 +23,32 @@ class Card_Layout extends Component {
                 let cards = response.data[0].cards;
                 let images = this.state.imageUrls;
 
+                // For each card in user's collection, put the image URL into our images array
                 cards.forEach(element => {
                     images.push(element.imageUrl)
                 });
 
+                // Set our state to contain the newly found image URLs
                 this.setState({ imageUrls: images });
             })
-    }
+    };
+
+    renderImage(imageUrl) {
+        return (
+          <div>
+            <img src={imageUrl} />
+          </div>
+        );
+      }
+
 
     render() {
         return (
-            <div></div>
+            <div className="cards">
+                <div className="images">
+                    {this.state.imageUrls.map(imageUrl => this.renderImage(imageUrl))}
+                </div>
+            </div>
         )
     }
 
