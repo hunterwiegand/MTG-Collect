@@ -62,29 +62,30 @@ class Add_Cards extends Component {
         console.log("username: ", this.state.username);
 
         // Request to server to add card
-        // axios.post("/collection/", {
-        //     quantity: this.state.quantity,
-        //     colors: this.state.colors,
-        //     mana_cost: this.state.mana_cost,
-        //     name: this.state.name,
-        //     type_line: this.state.type_line,
-        //     rarity: this.state.rarity,
-        //     oracle_text: this.state.oracle_text,
-        //     cmc: this.state.cmc,
-        //     imageUrl: this.state.imageUrl
-        // })
-        // .then(response => {
-        //     console.log(response)
-        //     if (!response.data.errmsg) {
-        //         console.log("card send to DB")
-        //     } else {
-        //         console.log('Error adding card')
-        //     }
-        // }).catch(error => {
-        //     console.log('card error: ')
-        //     console.log(error)
+        axios.post("/collection/", {
+            quantity: this.state.quantity,
+            colors: this.state.colors,
+            mana_cost: this.state.mana_cost,
+            name: this.state.name,
+            type_line: this.state.type_line,
+            rarity: this.state.rarity,
+            oracle_text: this.state.oracle_text,
+            cmc: this.state.cmc,
+            imageUrl: this.state.imageUrl,
+            username: this.state.username
+        })
+        .then(response => {
+            console.log(response)
+            if (!response.data.errmsg) {
+                console.log("card send to DB")
+            } else {
+                console.log('Error adding card')
+            }
+        }).catch(error => {
+            console.log('card error: ')
+            console.log(error)
 
-        // });
+        });
     };
 
     // Function for when the user submits the form
