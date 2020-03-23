@@ -73,6 +73,7 @@ class Add_Cards extends Component {
             username: this.state.username
         })
         .then(response => {
+            console.log(response)
             this.setState({
                 message: "Card Added, search another"
             });

@@ -31,15 +31,20 @@ router.post('/', (req, res) => {
     imageUrl: imageUrl
   });
 
+  console.log("In card add")
 
   // TODO 
   // Validate if the card is already entered to avoid duplicates
   User.find({ username: req.body.username }, (err, data) => {
 
+    console.log(data);
+    console.log("in user card search");
     let userCards = data[0].cards;
     let foundMatch = false;
+    let noCards = false;
 
-    // console.log(userCards)
+    console.log("usercards: ", userCards);
+    console.log(foundMatch);
 
     if (userCards.length !== 0) {
       for (let i = 0; i < userCards.length; i++) {
@@ -49,24 +54,25 @@ router.post('/', (req, res) => {
           return "Card already added";
         }
       }
-    } else if (!foundMatch) {
-      console.log("didn't find match");
-      let conditions = { username: req.body.username };
-      let update = { $push: { cards: newCard } };
-      let options = { multi: true };
-
-
-      User.update(conditions, update, options, callback);
-
-      function callback(err) {
-        if (err) throw err;
-      }
     } else {
       console.log("no cards yet");
       let conditions = { username: req.body.username };
       let update = { $push: { cards: newCard } };
       let options = { multi: true };
       User.update(conditions, update, options, callback);
+      function callback(err) {
+        if (err) throw err;
+      }
+      noCards = true;
+    }
+    if (!foundMatch && !noCards) {
+      console.log("didn't find match");
+      let conditions = { username: req.body.username };
+      let update = { $push: { cards: newCard } };
+      let options = { multi: true };
+
+      User.update(conditions, update, options, callback);
+
       function callback(err) {
         if (err) throw err;
       }
