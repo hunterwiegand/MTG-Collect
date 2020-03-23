@@ -18,7 +18,8 @@ class Add_Cards extends Component {
         cmc: "",
         imageUrl: "",
         message: "Search for a card!",
-        username: window.sessionStorage.getItem("username")
+        username: window.sessionStorage.getItem("username"),
+        wasAdded: Boolean
     }
 
     // Function for finding card info
@@ -42,7 +43,7 @@ class Add_Cards extends Component {
                     oracle_text: data.oracle_text,
                     type: data.type,
                     cmc: data.cmc,
-                    imageUrl: data.image_uris.normal
+                    imageUrl: data.image_uris.normal,
                 })
             })
             // If there is an error while handling the request set the state message to inform the user to try again
@@ -57,7 +58,6 @@ class Add_Cards extends Component {
 
     // Function to add card to collection
     addCard = () => {
-        let success = true;
 
         // Request to server to add card
         axios.post("/collection/", {
@@ -72,23 +72,26 @@ class Add_Cards extends Component {
             imageUrl: this.state.imageUrl,
             username: this.state.username
         })
-        .then(response => {
-            console.log(response)
-            this.setState({
-                message: "Card Added, search another"
-            });
-            if (response.status === 200) {
-                console.log("card send to DB");
-            } else {
-                console.log('Error adding card')
-            }
-        }).catch(error => {
+        .catch(error => {
             console.log('card error: ')
             console.log(error)
-            success = true;
+        })
+        .then(response => {
+            console.log(response)
+            if (response.data === "No Match Found" || response.data === "No cards yet") {
+                console.log("card send to DB");
+                this.setState({
+                    message: "Card Added, search another",
+                    wasAdded: true
+                });
+            };
+            if (response.data === "Found Match") {
+                this.setState({
+                    wasAdded: false
+                })
+            };
         });
 
-        return success;
     };
 
     // Function for when the user submits the form
@@ -126,8 +129,7 @@ class Add_Cards extends Component {
         event.preventDefault();
 
         // Run function for find cards using the API
-        let success = this.addCard();
-        console.log("success: ", success)
+        this.addCard();
 
         // Empty out the current state for the new search
         this.setState({
@@ -167,8 +169,17 @@ class Add_Cards extends Component {
         if (this.state.imageUrl !== "") {
             isLoaded = true;
         };
+
+        let wasAdded = this.state.wasAdded;
         return (
             <Container>
+
+                {wasAdded ? (
+                    <div>Card was added</div>
+                ) : (
+                    <div>Card already in Collection</div>
+                )}
+
                 {/* Load our Form component to search cards */}
                 <Form
                     handleInputChange={this.handleInputChange}

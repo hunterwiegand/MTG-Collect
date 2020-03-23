@@ -37,13 +37,11 @@ router.post('/', (req, res) => {
   // Validate if the card is already entered to avoid duplicates
   User.find({ username: req.body.username }, (err, data) => {
 
-    console.log(data);
-    console.log("in user card search");
     let userCards = data[0].cards;
     let foundMatch = false;
     let noCards = false;
+    let outcome = "";
 
-    console.log("usercards: ", userCards);
     console.log(foundMatch);
 
     if (userCards.length !== 0) {
@@ -51,7 +49,8 @@ router.post('/', (req, res) => {
         if (userCards[i].name === newCard.name) {
           console.log("Found match");
           foundMatch = true;
-          return "Card already added";
+          outcome = "Found Match"
+          res.send(outcome);
         }
       }
     } else {
@@ -64,6 +63,8 @@ router.post('/', (req, res) => {
         if (err) throw err;
       }
       noCards = true;
+      outcome = "No cards yet"
+      res.send(outcome);
     }
     if (!foundMatch && !noCards) {
       console.log("didn't find match");
@@ -76,6 +77,8 @@ router.post('/', (req, res) => {
       function callback(err) {
         if (err) throw err;
       }
+      outcome = "No Match Found"
+      res.send(outcome);
     }
   })
 });
