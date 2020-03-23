@@ -5,7 +5,7 @@ mongoose.promise = Promise
 // Define cardSchema
 const cardSchema = new Schema({
 
-    name: { type: String, unique: true, required: true},
+    name: { type: String, unique: false, required: true},
     quantity: { type: Number, unique: false, required: true},
     colors: { type: Array, unique: false, required: true},
     mana_cost: { type: String, unique: false, required: true},
