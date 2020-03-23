@@ -5,7 +5,6 @@ const mongoose = require("mongoose")
 mongoose.promise = Promise
 
 router.post('/', (req, res) => {
-  console.log("Card add");
 
   let {
     quantity,
@@ -35,59 +34,48 @@ router.post('/', (req, res) => {
 
   // TODO 
   // Validate if the card is already entered to avoid duplicates
-  // User.find({ username: req.body.username }, (err, docs) => {
-  //   if (docs) {
+  User.find({ username: req.body.username }, (err, data) => {
 
-  //     console.log("docs[0].cards :", docs)
+    let userCards = data[0].cards;
 
-  //   } else {
-  //     let conditions = { username: req.body.username };
-  //     let update = { $push: { cards: newCard } };
-  //     let options = { multi: true };
+    // console.log(userCards)
 
-  //     User.update(conditions, update, options, callback);
-
-  //     function callback(err) {
-  //       if (err) throw err;
-  //     }
-  //   }
-  // })
-
-  // User.find()
-  //   .where("cards.name.", newCard.name)
-  //   .exec(function (err, card) {
-  //     if (!card) {
-  //       console.log("card already added");
-  //       return res.json({
-  //         error: "Card already Added"
-  //       });
-  //     } else {
-  //       let conditions = { username: req.body.username };
-  //       let update = { $push: { cards: newCard } };
-  //       let options = { multi: true };
-
-  //       User.update(conditions, update, options, callback);
-
-  //       function callback(err) {
-  //         if (err) throw err;
-  //       }
-  //     }
-  //   });
+    if (userCards.length !== 0) {
+      for (let i = 0; i < userCards.length; i++) {
+        if (userCards[i].name === newCard.name) {
+          console.log("Found match");
+          return "Card already added";
+        } else {
+          console.log("didn't find match");
+          let conditions = { username: req.body.username };
+          let update = { $push: { cards: newCard } };
+          let options = { multi: true };
 
 
-  let conditions = { username: req.body.username };
-  let update = { $push: { cards: newCard } };
-  let options = { multi: true };
+          User.update(conditions, update, options, callback);
+
+          function callback(err) {
+            if (err) throw err;
+          }
+        }
+      }
+    } else {
+      console.log("no cards yet");
+      let conditions = { username: req.body.username };
+      let update = { $push: { cards: newCard } };
+      let options = { multi: true };
 
 
-  User.update(conditions, update, options, callback);
+      User.update(conditions, update, options, callback);
 
-  function callback(err) {
-    if (err) throw err;
-  }
+      function callback(err) {
+        if (err) throw err;
+      }
+    }
 
 
-  });
+  })
+});
 
 router.post("/get-cards", (req, res) => {
   console.log("card get route");

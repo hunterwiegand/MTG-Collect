@@ -39,7 +39,6 @@ class LoginForm extends Component {
                         loggedIn: true,
                         username: response.data.username
                     })
-                    window.sessionStorage.setItem("username", this.state.username);
                     // update the state to redirect to home
                     this.setState({
                         redirectTo: '/'
