@@ -18,7 +18,8 @@ class Navbar extends Component {
                 this.props.updateUser({
                     loggedIn: false,
                     username: null
-                })
+                });
+                window.sessionStorage.setItem("username", null);
             }
         }).catch(error => {
             console.log('Logout error')
