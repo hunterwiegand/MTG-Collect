@@ -18,7 +18,7 @@ class Add_Cards extends Component {
         cmc: "",
         imageUrl: "",
         message: "Search for a card!",
-        username: this.props.username
+        username: window.sessionStorage.getItem("username")
     }
 
     // Function for finding card info
@@ -149,6 +149,12 @@ class Add_Cards extends Component {
             quantity: value
         });
     };
+
+    componentDidMount = () => {
+
+        // console.log("username: ", window.sessionStorage.getItem("username"))
+        console.log("username: ", this.state.username);
+    }
 
     render() {
         // Set variable to see if an image is in our state

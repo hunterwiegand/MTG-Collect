@@ -6,7 +6,7 @@ import Card_Layout from "../components/Card_Layout";
 class Collection extends Component {
 
     state = {
-        username: this.props.username
+        username: window.sessionStorage.getItem("username")
     }
 
     render() {
