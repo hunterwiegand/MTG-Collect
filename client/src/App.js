@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import axios from 'axios'
-import { BrowserRouter as Router, Route, Switch, HashRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 // components
 import Signup from './pages/sign-up'
 import LoginForm from './pages/login-form'

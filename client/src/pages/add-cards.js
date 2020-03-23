@@ -57,6 +57,7 @@ class Add_Cards extends Component {
 
     // Function to add card to collection
     addCard = () => {
+        let success = true;
 
         // Request to server to add card
         axios.post("/collection/", {
@@ -83,8 +84,10 @@ class Add_Cards extends Component {
         }).catch(error => {
             console.log('card error: ')
             console.log(error)
-
+            success = true;
         });
+
+        return success;
     };
 
     // Function for when the user submits the form
@@ -122,7 +125,8 @@ class Add_Cards extends Component {
         event.preventDefault();
 
         // Run function for find cards using the API
-        this.addCard();
+        let success = this.addCard();
+        console.log("success: ", success)
 
         // Empty out the current state for the new search
         this.setState({

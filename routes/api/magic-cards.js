@@ -37,6 +37,7 @@ router.post('/', (req, res) => {
   User.find({ username: req.body.username }, (err, data) => {
 
     let userCards = data[0].cards;
+    let foundMatch = false;
 
     // console.log(userCards)
 
@@ -44,23 +45,12 @@ router.post('/', (req, res) => {
       for (let i = 0; i < userCards.length; i++) {
         if (userCards[i].name === newCard.name) {
           console.log("Found match");
+          foundMatch = true;
           return "Card already added";
-        } else {
-          console.log("didn't find match");
-          let conditions = { username: req.body.username };
-          let update = { $push: { cards: newCard } };
-          let options = { multi: true };
-
-
-          User.update(conditions, update, options, callback);
-
-          function callback(err) {
-            if (err) throw err;
-          }
         }
       }
-    } else {
-      console.log("no cards yet");
+    } else if (!foundMatch) {
+      console.log("didn't find match");
       let conditions = { username: req.body.username };
       let update = { $push: { cards: newCard } };
       let options = { multi: true };
@@ -71,9 +61,16 @@ router.post('/', (req, res) => {
       function callback(err) {
         if (err) throw err;
       }
+    } else {
+      console.log("no cards yet");
+      let conditions = { username: req.body.username };
+      let update = { $push: { cards: newCard } };
+      let options = { multi: true };
+      User.update(conditions, update, options, callback);
+      function callback(err) {
+        if (err) throw err;
+      }
     }
-
-
   })
 });
 
