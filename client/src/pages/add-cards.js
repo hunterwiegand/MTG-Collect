@@ -19,7 +19,7 @@ class Add_Cards extends Component {
         imageUrl: "",
         message: "Search for a card!",
         username: window.sessionStorage.getItem("username"),
-        wasAdded: Boolean
+        wasAdded: null
     }
 
     // Function for finding card info
@@ -171,14 +171,16 @@ class Add_Cards extends Component {
         };
 
         let wasAdded = this.state.wasAdded;
+
         return (
             <Container>
 
                 {wasAdded ? (
                     <div>Card was added</div>
                 ) : (
-                    <div>Card already in Collection</div>
+                    <div>Card was already Added</div>
                 )}
+                
 
                 {/* Load our Form component to search cards */}
                 <Form
