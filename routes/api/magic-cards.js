@@ -84,13 +84,75 @@ router.post('/', (req, res) => {
 });
 
 router.post("/get-cards", (req, res) => {
-  console.log("card get route");
-  console.log("req", req.user.username);
+
+  // console.log("req.query", req.body.query)
+
+  // let {
+  //   color,
+  //   rarity,
+  //   pT,
+  //   cmc
+  // } = req.body.query
 
   User.find({ username: req.user.username })
     .then(data => {
-      console.log(data)
-      res.send(data);
+      // console.log("data: ", data)
+      let cards = data[0].cards;
+      let params = req.body.query;
+
+      // Filter out the parameters that were void
+      Object.keys(params).map(function (key, index) {
+        if (params[key] === null) {
+          delete params[key];
+        }
+      });
+
+      // console.log("cards: ", cards);
+      // console.log("cards[1].colors: ", cards[1].colors);
+      // console.log("params: ", params)
+
+      let test;
+
+      cards.forEach(element => {
+        // console.log("element: ", element)
+        // console.log(typeof(element))
+        test = checkIfObjectContains(params, element)
+      })
+
+
+      function checkIfObjectContains(two, one) {
+        console.log("one: ", one);
+        console.log("two: ", two);
+        for (var i in one) {
+          if (!two.hasOwnProperty(i) || one[i] !== two[i]) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      console.log("test: ", test);
+      console.log("params: ", params);
+      console.log("card[0].cmc: ", cards[0].cmc)
+
+
+      // function where(cards, params) {
+      //   return cards.filter(function(cardProp) {
+      //     return Object.keys(params).every(function(key){
+      //       return cardProp.hasOwnProperty(key) && params[key] === cardProp[key];
+      //     });
+      //   });
+      // };
+
+      function where(collection, constraint) {
+        return collection.filter(collectionItem =>
+          Object.keys(constraint).every(key =>
+            collectionItem.hasOwnProperty(key) && constraint[key] === collectionItem[key]));
+      }
+
+
+
+      // res.send(data[0].cards);
     });
 
 })
