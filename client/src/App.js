@@ -1,12 +1,15 @@
 
 import React, { Component } from 'react';
 import axios from 'axios'
-import { BrowserRouter as Router, Route, Switch, HashRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 // components
-import Signup from './components/sign-up'
-import LoginForm from './components/login-form'
+import Signup from './pages/sign-up'
+import LoginForm from './pages/login-form'
 import Navbar from './components/navbar/index.js'
-import Home from './components/home'
+import Home from './pages/home'
+import Collection from "./pages/collection-page.js"
+import Add_Cards from "./pages/add-cards.js"
+import Search_Cards from "./pages/search-cards-page.js"
 
 class App extends Component {
   constructor() {
@@ -34,12 +37,11 @@ class App extends Component {
       console.log('Get user response: ')
       console.log(response.data)
       if (response.data.user) {
-        console.log('Get User: There is a user saved in the server session: ')
-
         this.setState({
           loggedIn: true,
           username: response.data.user.username
         })
+        window.sessionStorage.setItem("username", this.state.username);
       } else {
         console.log('Get user: no user');
         this.setState({
@@ -55,11 +57,6 @@ class App extends Component {
       <Router>
         <div className="App">
           <Navbar updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
-          
-          {/* greet user if logged in: */}
-          {this.state.loggedIn &&
-            <p>Join the party, {this.state.username}!</p>
-          }
           {/* Routes to different components */}
           <Route
             exact path="/"
@@ -80,6 +77,23 @@ class App extends Component {
             path="/signup"
             render={() =>
               <Signup />}
+          />
+          <Route
+            path="/collection"
+            render={() =>
+              <Collection 
+              username={this.state.username}
+              />}
+          />
+          <Route
+            path="/add-cards"
+            render={() =>
+              <Add_Cards />}
+          />
+          <Route
+            path="/search-cards"
+            render={() =>
+              <Search_Cards />}
           />
 
         </div>

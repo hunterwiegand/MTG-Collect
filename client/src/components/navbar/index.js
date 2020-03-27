@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './index.css';
 import axios from 'axios'
 
@@ -19,7 +18,8 @@ class Navbar extends Component {
                 this.props.updateUser({
                     loggedIn: false,
                     username: null
-                })
+                });
+                window.sessionStorage.setItem("username", null);
             }
         }).catch(error => {
             console.log('Logout error')
@@ -39,7 +39,11 @@ class Navbar extends Component {
                         {loggedIn ? (
                             <section className="navbar-section">
                                 <Link to="#" className="btn btn-link text-secondary" onClick={this.logout}>
-                                    <span className="text-secondary">logout</span></Link>
+                                    <span className="text-secondary">logout</span>
+                                </Link>
+                                <Link to="/" className="btn btn-link text-secondary">
+                                    <span className="text-secondary">home</span>
+                                </Link>
 
                             </section>
                         ) : (
