@@ -15,18 +15,13 @@ class Card_Layout extends Component {
     // Triggers when component mounts to the DOM
     componentDidMount() {
 
-
-
-
         let tom = {
             name: null,
             colors: null,
-            rarity: null,
+            rarity: "common",
             pT: null,
-            cmc: 8
+            cmc: .8
         };
-
-
 
         // Axios post to retrieve user's cards
         axios.post("/collection/get-cards", {
@@ -34,7 +29,11 @@ class Card_Layout extends Component {
         })
             .then(response => {
 
+                console.log("res:", response)
+
                 let data = response.data
+
+                console.log("data: ", data)
 
                 let cards = [];
 

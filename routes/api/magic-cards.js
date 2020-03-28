@@ -85,20 +85,22 @@ router.post('/', (req, res) => {
 
 router.post("/get-cards", (req, res) => {
 
-  // console.log("req.query", req.body.query)
-
-  // let {
-  //   color,
-  //   rarity,
-  //   pT,
-  //   cmc
-  // } = req.body.query
-
+  // DB call to find user's cards
   User.find({ username: req.user.username })
     .then(data => {
-      // console.log("data: ", data)
+      // Store user cards array in cards
       let cards = data[0].cards;
+      // store parameters from post hit
       let params = req.body.query;
+      // store the returned cards from db call into an array
+      let searchedCards = [];
+
+      let str = "cmc: 8";
+
+      let test = str.replace(/:.*$/, "");
+
+      // console.log("test: ", test);
+      // console.log("length: ", test.length);
 
       // Filter out the parameters that were void
       Object.keys(params).map(function (key, index) {
@@ -107,52 +109,70 @@ router.post("/get-cards", (req, res) => {
         }
       });
 
-      // console.log("cards: ", cards);
-      // console.log("cards[1].colors: ", cards[1].colors);
-      // console.log("params: ", params)
+      let arrayParams = [];
+      // Loop through our params obj
+      for (const element in params) {
+        // Push each key in params obj to the arrayParams[]
+        arrayParams.push(element);
+      };
 
-      let test;
+      // console.log(arrayParams);
 
-      cards.forEach(element => {
+
+      arrayParams.forEach(element => {
         // console.log("element: ", element)
-        // console.log(typeof(element))
-        test = checkIfObjectContains(params, element)
-      })
+        for (i in cards) {
+          // console.log("element: ", element);
+          // console.log("cards[i].element", cards[i] + "." + element)
+          // console.log("cards[i].cmc", cards[i].cmc)
+          // console.log("?: ", cards[i].element)
 
+          // name: null,
+          // colors: null,
+          // rarity: "common",
+          // pT: null,
+          // cmc: .8
 
-      function checkIfObjectContains(two, one) {
-        console.log("one: ", one);
-        console.log("two: ", two);
-        for (var i in one) {
-          if (!two.hasOwnProperty(i) || one[i] !== two[i]) {
-            return false;
+          let key;
+
+          switch(element){
+            case "cmc":
+              key = cards[i].cmc;
+              break;
+            case "name":
+              key = cards[i].name;
+              break;
+            case "colors":
+              key = cards[i].colors;
+              break;
+            case "rarity":
+              key = cards[i].rarity;
+              break;
+            case "pT":
+              key = cards[i].pT;
+              break;
+          }
+          console.log("key: ", key)
+          // If more than one parameter grab array.length to find num of elemenets
+          // for each element search cards, if cardFound === true, move on to next parameter
+          // if all parameters return isFound, add card to searchedCards
+          if (key === "uncommon") {
+            console.log("in if loop");
+            searchedCards.push(cards[i])
           }
         }
-        return true;
-      }
-
-      console.log("test: ", test);
-      console.log("params: ", params);
-      console.log("card[0].cmc: ", cards[0].cmc)
-
-
-      // function where(cards, params) {
-      //   return cards.filter(function(cardProp) {
-      //     return Object.keys(params).every(function(key){
-      //       return cardProp.hasOwnProperty(key) && params[key] === cardProp[key];
-      //     });
-      //   });
+      })
+      // for (i in cards) {
+      //   if (cards[i].cmc === 8) {
+      //     // console.log("card", cards[i])
+      //     // console.log("We made it")
+      //     searchedCards.push(cards[i]);
+      //   };
       // };
 
-      function where(collection, constraint) {
-        return collection.filter(collectionItem =>
-          Object.keys(constraint).every(key =>
-            collectionItem.hasOwnProperty(key) && constraint[key] === collectionItem[key]));
-      }
 
-
-
-      // res.send(data[0].cards);
+      // console.log("searchedCards: ", searchedCards)
+      res.send(searchedCards);
     });
 
 })
