@@ -94,6 +94,7 @@ router.post("/get-cards", (req, res) => {
       let params = req.body.query;
       // store the returned cards from db call into an array
       let searchedCards = [];
+      let validateCArds = [];
 
       let str = "cmc: 8";
 
@@ -119,59 +120,120 @@ router.post("/get-cards", (req, res) => {
       // console.log(arrayParams);
 
 
+      // searchedCards array with cards that meet each parameter restriction
       arrayParams.forEach(element => {
-        // console.log("element: ", element)
         for (i in cards) {
-          // console.log("element: ", element);
-          // console.log("cards[i].element", cards[i] + "." + element)
-          // console.log("cards[i].cmc", cards[i].cmc)
-          // console.log("?: ", cards[i].element)
-
-          // name: null,
-          // colors: null,
-          // rarity: "common",
-          // pT: null,
-          // cmc: .8
-
           let key;
+          let value;
 
-          switch(element){
+          switch (element) {
             case "cmc":
               key = cards[i].cmc;
+              value = params.cmc;
               break;
             case "name":
               key = cards[i].name;
+              value = params.name
               break;
             case "colors":
               key = cards[i].colors;
+              value = params.colors
               break;
             case "rarity":
               key = cards[i].rarity;
+              value = params.rarity
               break;
             case "pT":
               key = cards[i].pT;
+              value = params.pT
               break;
           }
-          console.log("key: ", key)
-          // If more than one parameter grab array.length to find num of elemenets
-          // for each element search cards, if cardFound === true, move on to next parameter
-          // if all parameters return isFound, add card to searchedCards
-          if (key === "uncommon") {
-            console.log("in if loop");
-            searchedCards.push(cards[i])
+
+          // If key is equal to value
+          if (key === value) {
+            // console.log("card length: ", searchedCards.length);
+            // console.log("key: ", key);
+            // console.log("value: ", value)
+            // If searchedCards isn't empty
+            if (searchedCards.length > 0) {
+              // loop through searchedCards
+              searchedCards.some(card => {
+                // Check to see if the card was already added
+                if (card.name != cards[i].name) {
+                  // If it wasn't, add card
+                  console.log("card added because no match")
+                  // console.log("card: ", cards[i])
+                  searchedCards.push(cards[i])
+                };
+                return true;
+              })
+            } else {
+              console.log("card added because empty")
+              searchedCards.push(cards[i])
+            }
+            // console.log("card length: ", searchedCards.length);
           }
         }
+      });
+
+      // console.log("validateCArds: ", validateCards)
+      let counter = 0;
+      // Validate each card to verify it meets all parameter restrictions
+      // Loop through each card
+      searchedCards.forEach(cardObj => {
+        validateCards = searchedCards;
+        console.log("cardObj: ", cardObj.name)
+        // Loop through each parameter
+        arrayParams.forEach(element => {
+          // console.log("element: ", element);
+          let key;
+          let value;
+
+          switch (element) {
+            case "cmc":
+              key = cardObj.cmc;
+              value = params.cmc;
+              break;
+            case "name":
+              key = cardObj.name;
+              value = params.name
+              break;
+            case "colors":
+              key = cardObj.colors;
+              value = params.colors
+              break;
+            case "rarity":
+              key = cardObj.rarity;
+              value = params.rarity
+              break;
+            case "pT":
+              key = cardObj.pT;
+              value = params.pT
+              break;
+          }
+
+          // console.log("key: ", key);
+          // console.log("value: ", value);
+          // console.log("card[i]", cardObj)
+          // if card.parameter != params.value
+          console.log("element: ", element)
+          console.log("Card: ", key);
+          console.log("Request: ", value);
+          if (key != value) {
+          console.log("not equal")
+            // Remove card from validateCards
+            searchedCards.splice(counter, 1)
+            console.log("validateCards: ", validateCards);
+            counter--;
+          }
+        })
+        counter++;
+        console.log("counter: ", counter)
+        console.log("searchedCards: ", searchedCards)
       })
-      // for (i in cards) {
-      //   if (cards[i].cmc === 8) {
-      //     // console.log("card", cards[i])
-      //     // console.log("We made it")
-      //     searchedCards.push(cards[i]);
-      //   };
-      // };
 
 
-      // console.log("searchedCards: ", searchedCards)
+      console.log("searchedCards: ", searchedCards)
       res.send(searchedCards);
     });
 

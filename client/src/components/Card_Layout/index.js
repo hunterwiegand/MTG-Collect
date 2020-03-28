@@ -18,9 +18,9 @@ class Card_Layout extends Component {
         let tom = {
             name: null,
             colors: null,
-            rarity: "common",
+            rarity: "uncommon",
             pT: null,
-            cmc: .8
+            cmc: 1
         };
 
         // Axios post to retrieve user's cards
