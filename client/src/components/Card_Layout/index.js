@@ -16,11 +16,11 @@ class Card_Layout extends Component {
     componentDidMount() {
 
         let tom = {
-            name: null,
+            name: "Nicol Bolas",
             colors: null,
-            rarity: "uncommon",
+            rarity: "rare",
             pT: null,
-            cmc: 1
+            cmc: 8
         };
 
         // Axios post to retrieve user's cards
