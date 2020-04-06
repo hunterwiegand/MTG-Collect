@@ -14,15 +14,26 @@ class Card_Layout extends Component {
 
     // Triggers when component mounts to the DOM
     componentDidMount() {
+
+        let tom = {
+            name: "Nicol Bolas",
+            colors: null,
+            rarity: "rare",
+            pT: null,
+            cmc: 8
+        };
+
         // Axios post to retrieve user's cards
         axios.post("/collection/get-cards", {
-            params: {
-                username: this.props.username
-            }
+                query: tom
         })
             .then(response => {
-                let data = response.data[0].cards;
-                // console.log("cards", data)
+
+                console.log("res:", response)
+
+                let data = response.data
+
+                console.log("data: ", data)
 
                 let cards = [];
 
@@ -39,13 +50,12 @@ class Card_Layout extends Component {
                 // this.setState({ imageUrls: images });
                 // console.log(cards)
                 this.setState({ cards: cards });
-            })
+            });
     };
 
     getQuantity = (cardUrl) =>{
         let cardIndex = 0;
 
-        // console.log(this.state.cards[0])
         for(let i = 0; i < this.state.cards.length; i++) {
             if (this.state.cards[i].imageUrl === cardUrl) {
                 cardIndex = i;
@@ -57,8 +67,45 @@ class Card_Layout extends Component {
 
     changeQuantity = (event) => {
         console.log(event.target.getAttribute("quantity"));
-    }
+    };
     
+    findCards = (query) => {
+        console.log("query: ", query);
+
+        let tom = {
+            name: null,
+            color: ["B", "R", "U"],
+            rarity: null,
+            pT: null,
+            cmc: null
+        };
+
+        //Axios call to db sending in our parameters
+        axios.post("/collection/get-cards", JSON.parse({
+                username: this.props.username,
+                query: tom
+        }))
+            .then(response => {
+
+                let data = response.data
+
+                let cards = [];
+
+                // For each card in user's collection, put the card into our car array
+                data.forEach(element => {
+                    cards.push({
+                        imageUrl: element.imageUrl,
+                        quantity: element.quantity,
+                        name: element.name
+                    });
+                });
+
+                // Set our state to contain the newly found image URLs
+                // this.setState({ imageUrls: images });
+                // console.log(cards)
+                this.setState({ cards: cards });
+            });
+    }
 
     renderImage(cardUrl) {
         console.log(cardUrl)
@@ -71,7 +118,7 @@ class Card_Layout extends Component {
             <span quantity={quantity} onClick={this.changeQuantity}>{quantity}</span>
             </div>
         );
-      }
+    };
 
 
     render() {
@@ -89,9 +136,8 @@ class Card_Layout extends Component {
                 </div>
             </div>
         )
-    }
+    };
 
 }
-
 
 export default Card_Layout
