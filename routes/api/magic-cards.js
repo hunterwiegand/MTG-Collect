@@ -239,66 +239,6 @@ router.post("/get-cards", (req, res) => {
         console.log("currentIndex: ", currentIndex);
       });
 
-
-      // searchedCards.forEach(cardObj => {
-      //   console.log("cardObj: ", cardObj.name)
-      //   // Loop through each parameter
-      //   arrayParams.forEach(element => {
-      //     // console.log("element: ", element);
-      //     let key;
-      //     let value;
-
-      //     switch (element) {
-      //       case "cmc":
-      //         key = cardObj.cmc;
-      //         value = params.cmc;
-      //         break;
-      //       case "name":
-      //         key = cardObj.name;
-      //         value = params.name
-      //         break;
-      //       case "colors":
-      //         key = cardObj.colors;
-      //         value = params.colors
-      //         break;
-      //       case "rarity":
-      //         key = cardObj.rarity;
-      //         value = params.rarity
-      //         break;
-      //       case "pT":
-      //         key = cardObj.pT;
-      //         value = params.pT
-      //         break;
-      //     }
-
-      //     // console.log("key: ", key);
-      //     // console.log("value: ", value);
-      //     // console.log("card[i]", cardObj)
-      //     // if card.parameter != params.value
-      //     // console.log("element: ", element)
-      //     // console.log("Card: ", key);
-      //     // console.log("Request: ", value);
-      //     if (key != value) {
-      //     console.log("not equal")
-      //       // Remove card from validateCards
-      //       validateCards.splice(counter, 1)
-      //       console.log("validateCards: ", validateCards);
-      //       counter--;
-      //     };
-
-      //     // If key and value are equal
-      //     // if (key === value) {
-      //     //   // Add card to array
-      //     //   validateCards.push(cardObj);
-      //     // }
-      //   })
-      //   counter++;
-      //   console.log("counter: ", counter)
-      //   console.log("searchedCards: ", searchedCards)
-      // });
-
-
-      // console.log("searchedCards: ", searchedCards)
       res.send(response);
     });
 
