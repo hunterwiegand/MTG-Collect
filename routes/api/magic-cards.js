@@ -94,17 +94,10 @@ router.post("/get-cards", (req, res) => {
       let params = req.body.query;
       // store the returned cards from db call into an array
       let searchedCards = [];
-      let validateCards = [];
       let response = [];
       // Store the parameters into an array of strings
       let arrayParams = [];
 
-      let str = "cmc: 8";
-
-      let test = str.replace(/:.*$/, "");
-
-      // console.log("test: ", test);
-      // console.log("length: ", test.length);
 
       // Filter out the parameters that were void
       Object.keys(params).map(function (key, index) {
@@ -118,15 +111,14 @@ router.post("/get-cards", (req, res) => {
         arrayParams.push(element);
       };
 
-      console.log(arrayParams);
-
-
       // populate searchedCards array with cards that meet each parameter restriction
       arrayParams.forEach(element => {
         for (i in cards) {
           let key;
           let value;
 
+          console.log("Element: ", element)
+          console.log("params.colors: ", params.colors)
           switch (element) {
             case "cmc":
               key = cards[i].cmc;
@@ -138,7 +130,7 @@ router.post("/get-cards", (req, res) => {
               break;
             case "colors":
               key = cards[i].colors;
-              value = params.colors
+              value = params.colors;
               break;
             case "rarity":
               key = cards[i].rarity;
@@ -149,7 +141,36 @@ router.post("/get-cards", (req, res) => {
               value = params.pT
               break;
           }
+          Array.prototype.equals = function (array) {
+            // if the other array is a falsy value, return
+            if (!array)
+                return false;
+        
+            // compare lengths - can save a lot of time 
+            if (this.length != array.length)
+                return false;
+        
+            for (var i = 0, l=this.length; i < l; i++) {
+                // Check if we have nested arrays
+                if (this[i] instanceof Array && array[i] instanceof Array) {
+                    // recurse into the nested arrays
+                    if (!this[i].equals(array[i]))
+                        return false;       
+                }           
+                else if (this[i] != array[i]) { 
+                    // Warning - two different object instances will never be equal: {x:20} != {x:20}
+                    return false;   
+                }           
+            }       
+            return true;
+        };
 
+          if (element === "colors") {
+            if (key.equals(value)) {
+              key = true;
+              value = true;
+            };
+          };
           // If key is equal to value
           if (key === value) {
             // If searchedCards isn't empty
@@ -193,7 +214,7 @@ router.post("/get-cards", (req, res) => {
       arrayParams.forEach(element => {
         // Loop through each card
         console.log("Current arrayParam: ", element);
-        for(i in searchedCards) {
+        for (i in searchedCards) {
           let key;
           let value;
 
@@ -218,6 +239,40 @@ router.post("/get-cards", (req, res) => {
               key = searchedCards[i].pT;
               value = params.pT
               break;
+          };
+
+          Array.prototype.equals = function (array) {
+            // if the other array is a falsy value, return
+            if (!array)
+                return false;
+        
+            // compare lengths - can save a lot of time 
+            if (this.length != array.length)
+                return false;
+        
+            for (var i = 0, l=this.length; i < l; i++) {
+                // Check if we have nested arrays
+                if (this[i] instanceof Array && array[i] instanceof Array) {
+                    // recurse into the nested arrays
+                    if (!this[i].equals(array[i]))
+                        return false;       
+                }           
+                else if (this[i] != array[i]) { 
+                    // Warning - two different object instances will never be equal: {x:20} != {x:20}
+                    return false;   
+                }           
+            }       
+            return true;
+        };
+
+
+          if (element === "colors") {
+            console.log("KEY: ", key)
+            console.log(typeof key)
+            // if (key.equals(value)) {
+            //   key = true;
+            //   value = true;
+            // };
           };
           console.log(searchedCards[i].name);
           console.log("Key: ", key);

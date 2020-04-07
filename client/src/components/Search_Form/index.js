@@ -10,6 +10,7 @@ class Search_Form extends Component {
         this.state = {
             name: null,
             colors: null,
+            type_line: null,
             rarity: null,
             pT: null,
             cmc: null,
@@ -50,16 +51,22 @@ class Search_Form extends Component {
         // Setting the state to reflect the input changes
         console.log(event.target.name)
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.value.replace(/\s/g,'')
         });
 
         if (event.target.name === "cmc") {
             if (event.target.value !== NaN) {
                 this.setState({
-                    "cmc": parseInt(event.target.value)
+                    cmc: parseInt(event.target.value)
                 })
             };
-        };
+        } else if (event.target.name === "colors") {
+            let colors = [];
+            colors.push(event.target.value.replace(/\s/g,''))
+            this.setState({
+                colors: colors
+            })
+        }
     };
 
     // Function for when the user submits the form
@@ -71,6 +78,7 @@ class Search_Form extends Component {
         this.findCards({
             name: this.state.name,
             colors: this.state.colors,
+            type_line: null,
             rarity: this.state.rarity,
             pT: this.state.pT,
             cmc: this.state.cmc
@@ -78,6 +86,7 @@ class Search_Form extends Component {
         this.setState({
             name: null,
             colors: null,
+            type_line: null,
             rarity: null,
             pT: null,
             cmc: null
@@ -117,13 +126,24 @@ class Search_Form extends Component {
                             onChange={this.handleInputChange}
                         />
                         <label htmlFor="Query">
+                            <strong>Color(s)</strong>
+                        </label>
+                        <input
+                            className="form-control"
+                            id="rarity"
+                            type="text"
+                            value={this.state.colors}
+                            name="colors"
+                            onChange={this.handleInputChange}
+                        />
+                        <label htmlFor="Query">
                             <strong>Type</strong>
                         </label>
                         <input
                             className="form-control"
                             id="type"
                             type="text"
-                            value={this.state.type}
+                            value={this.state.type_line}
                             name="type"
                             onChange={this.handleInputChange}
                         />
