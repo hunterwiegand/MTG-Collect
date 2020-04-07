@@ -48,6 +48,7 @@ class Search_Form extends Component {
     // function used to make changes to the state
     handleInputChange = event => {
         // Setting the state to reflect the input changes
+        console.log(event.target.name)
         this.setState({
             [event.target.name]: event.target.value
         });
@@ -58,7 +59,7 @@ class Search_Form extends Component {
                     "cmc": parseInt(event.target.value)
                 })
             };
-        }
+        };
     };
 
     // Function for when the user submits the form
@@ -66,20 +67,32 @@ class Search_Form extends Component {
         event.preventDefault();
         this.setState({
             cards: []
-        })
+        });
         this.findCards({
             name: this.state.name,
             colors: this.state.colors,
             rarity: this.state.rarity,
             pT: this.state.pT,
             cmc: this.state.cmc
+        });
+        this.setState({
+            name: null,
+            colors: null,
+            rarity: null,
+            pT: null,
+            cmc: null
         })
+        this.clearForm();
     };
+
+    clearForm = () => {
+        document.getElementById("search-cards-form").reset();
+    }
 
     render() {
         return (
             <Container>
-                <form>
+                <form id="search-cards-form">
                     <div className="form-group">
                         <label htmlFor="Query">
                             <strong>Card Name</strong>
