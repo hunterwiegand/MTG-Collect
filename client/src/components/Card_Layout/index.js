@@ -35,39 +35,6 @@ class Card_Layout extends Component {
         console.log(event.target.getAttribute("quantity"));
     };
 
-    // Function to find cards in user's db that match send parameters
-    // findCards = (query) => {
-
-    //     // Axios post to retrieve user's cards
-    //     axios.post("/collection/get-cards", {
-    //         query: query
-    //     })
-    //         .then(response => {
-
-    //             console.log("res:", response)
-
-    //             let data = response.data
-
-    //             console.log("data: ", data)
-
-    //             let cards = [];
-
-    //             // For each card in user's collection, put the card into our car array
-    //             data.forEach(element => {
-    //                 cards.push({
-    //                     imageUrl: element.imageUrl,
-    //                     quantity: element.quantity,
-    //                     name: element.name
-    //                 });
-    //             });
-
-    //             // Set our state to contain the newly found image URLs
-    //             // this.setState({ imageUrls: images });
-    //             // console.log(cards)
-    //             this.setState({ cards: cards });
-    //         });
-    // };
-
     renderImage(cardUrl) {
         console.log(cardUrl)
 
