@@ -187,6 +187,9 @@ router.post("/get-cards", (req, res) => {
               key = cards[i].pT;
               value = params.pT
               break;
+            case "type_line":
+              key = cards[i].type_line;
+              value = params.type_line;
           }
 
           // If key is equal to value
@@ -251,14 +254,14 @@ router.post("/get-cards", (req, res) => {
           };
 
           if (element === "colors") {
-            console.log("240* KEY: ", colorKey)
+            console.log("254* KEY: ", colorKey)
             if (colorKey) {
               key = true;
               value = true;
             };
           };
           console.log(searchedCards[i].name);
-          console.log("241 Key: ", key);
+          console.log("261 Key: ", key);
           console.log("Value: ", value)
           // If the key is not equal to the value
           if (key != value) {
@@ -284,6 +287,15 @@ router.post("/get-cards", (req, res) => {
       res.send(response);
     });
 
-})
+});
+
+router.post("/get-all-cards", (req, res)=> {
+  User.find({ username: req.user.username })
+  .then(data => {
+    // Store user cards array in cards
+    let cards = data[0].cards;
+    res.send(cards)
+  });
+});
 
 module.exports = router;

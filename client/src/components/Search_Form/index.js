@@ -51,7 +51,7 @@ class Search_Form extends Component {
         // Setting the state to reflect the input changes
         console.log(event.target.name)
         this.setState({
-            [event.target.name]: event.target.value.replace(/\s/g,'')
+            [event.target.name]: event.target.value
         });
 
         if (event.target.name === "cmc") {
@@ -62,7 +62,7 @@ class Search_Form extends Component {
             };
         } else if (event.target.name === "colors") {
             let colors = [];
-            colors.push(event.target.value.replace(/\s/g,''))
+            colors.push(event.target.value.replace(/\s/g, ''))
             this.setState({
                 colors: colors
             })
@@ -78,7 +78,7 @@ class Search_Form extends Component {
         this.findCards({
             name: this.state.name,
             colors: this.state.colors,
-            type_line: null,
+            type_line: this.state.type_line,
             rarity: this.state.rarity,
             pT: this.state.pT,
             cmc: this.state.cmc
@@ -96,6 +96,34 @@ class Search_Form extends Component {
 
     clearForm = () => {
         document.getElementById("search-cards-form").reset();
+    };
+
+    handleAllCards = () => {
+        this.clearForm();
+        this.setState({
+            cards: []
+        });
+        // Axios post to retrieve user's cards
+        axios.post("/collection/get-all-cards")
+            .then(response => {
+                let data = response.data
+                console.log("data: ", data)
+                let cards = [];
+                // For each card in user's collection, put the card into our car array
+                data.forEach(element => {
+                    cards.push({
+                        imageUrl: element.imageUrl,
+                        quantity: element.quantity,
+                        name: element.name
+                    });
+                });
+                console.log("card urls: ", cards)
+
+                // Set our state to contain the newly found image URLs
+                // this.setState({ imageUrls: images });
+                // console.log(cards)
+                this.setState({ cards: cards });
+            });
     }
 
     render() {
@@ -144,18 +172,7 @@ class Search_Form extends Component {
                             id="type"
                             type="text"
                             value={this.state.type_line}
-                            name="type"
-                            onChange={this.handleInputChange}
-                        />
-                        <label htmlFor="Query">
-                            <strong>Power/Toughness</strong>
-                        </label>
-                        <input
-                            className="form-control"
-                            id="pT"
-                            type="text"
-                            value={this.state.pT}
-                            name="pT"
+                            name="type_line"
                             onChange={this.handleInputChange}
                         />
                         <label htmlFor="Query">
@@ -178,8 +195,16 @@ class Search_Form extends Component {
                         >
                             Search
         </button>
+
                     </div>
                 </form>
+                <button
+                    onClick={this.handleAllCards}
+                    type="button"
+                    className="btn btn-lg btn-danger float-right"
+                >
+                    Search All Cards
+        </button>
                 {this.state.cards.length ? (
                     <Card_Layout
                         cards={this.state.cards}
