@@ -94,17 +94,19 @@ router.post("/get-cards", (req, res) => {
       let params = req.body.query;
       // store the returned cards from db call into an array
       let searchedCards = [];
-      let validateCards = [];
       let response = [];
       // Store the parameters into an array of strings
       let arrayParams = [];
 
-      let str = "cmc: 8";
+      let colorKey = false;
 
-      let test = str.replace(/:.*$/, "");
+      console.log("cards: ", cards)
+      console.log("params: ", params)
+      console.log("searchedCards: ", searchedCards)
+      console.log("response: ", response)
+      console.log("arrayParams: ", arrayParams)
+      console.log("colorKey: ", colorKey)
 
-      // console.log("test: ", test);
-      // console.log("length: ", test.length);
 
       // Filter out the parameters that were void
       Object.keys(params).map(function (key, index) {
@@ -118,15 +120,17 @@ router.post("/get-cards", (req, res) => {
         arrayParams.push(element);
       };
 
-      console.log(arrayParams);
-
 
       // populate searchedCards array with cards that meet each parameter restriction
       arrayParams.forEach(element => {
         for (i in cards) {
-          let key;
-          let value;
+          let key = null;
+          let value = null;
 
+
+
+          // console.log("Element: ", element)
+          // console.log("params.colors: ", params.colors)
           switch (element) {
             case "cmc":
               key = cards[i].cmc;
@@ -137,8 +141,43 @@ router.post("/get-cards", (req, res) => {
               value = params.name
               break;
             case "colors":
+              // Function to see if instance of arrays are equal
+              Array.prototype.equals = function (array) {
+                // if the other array is a falsy value, return
+                if (!array)
+                  return false;
+
+                // compare lengths - can save a lot of time 
+                if (this.length != array.length)
+                  return false;
+
+                for (var i = 0, l = this.length; i < l; i++) {
+                  // Check if we have nested arrays
+                  if (this[i] instanceof Array && array[i] instanceof Array) {
+                    // recurse into the nested arrays
+                    if (!this[i].equals(array[i]))
+                      return false;
+                  }
+                  else if (this[i] != array[i]) {
+                    // Warning - two different object instances will never be equal: {x:20} != {x:20}
+                    return false;
+                  }
+                }
+                return true;
+              };
               key = cards[i].colors;
-              value = params.colors
+              value = params.colors;
+              console.log("160*  key:", key);
+              console.log(typeof key)
+              console.log("160*  value:", value);
+              console.log(typeof value)
+              if (i <= cards.length) {
+                if (key.equals(value)) {
+                  key = true;
+                  value = true;
+                  colorKey = true;
+                }
+              }
               break;
             case "rarity":
               key = cards[i].rarity;
@@ -148,6 +187,9 @@ router.post("/get-cards", (req, res) => {
               key = cards[i].pT;
               value = params.pT
               break;
+            case "type_line":
+              key = cards[i].type_line;
+              value = params.type_line;
           }
 
           // If key is equal to value
@@ -171,29 +213,20 @@ router.post("/get-cards", (req, res) => {
             }
           }
         }
+        key = null;
+        value = null;
       });
 
-      // console.log("validateCArds: ", validateCards)
-      let counter = 0;
-      validateCards = searchedCards;
-
-
+      response = searchedCards;
 
       // Validate each card to verify it meets all parameter restrictions
-      // Loop through each card
-
-
-      console.log("searchedCards: ", searchedCards);
-
-
-      response = searchedCards;
-      currentIndex = -1;
-
       // Loop through each parameter
       arrayParams.forEach(element => {
+        currentIndex = 0;
         // Loop through each card
         console.log("Current arrayParam: ", element);
-        for(i in searchedCards) {
+        for (i in searchedCards) {
+          console.log(searchedCards.length)
           let key;
           let value;
 
@@ -219,8 +252,16 @@ router.post("/get-cards", (req, res) => {
               value = params.pT
               break;
           };
+
+          if (element === "colors") {
+            console.log("254* KEY: ", colorKey)
+            if (colorKey) {
+              key = true;
+              value = true;
+            };
+          };
           console.log(searchedCards[i].name);
-          console.log("Key: ", key);
+          console.log("261 Key: ", key);
           console.log("Value: ", value)
           // If the key is not equal to the value
           if (key != value) {
@@ -233,75 +274,28 @@ router.post("/get-cards", (req, res) => {
             // Set the currentIndex back to to look at the next card after removing this element
             currentIndex--;
           };
+          console.log("End of loop");
+          // Move the currentIndex to the right by one, so we can potentially remove the next card
+          currentIndex++;
+          console.log("currentIndex: ", currentIndex);
         };
-        // Move the currentIndex to the right by one, so we can potentially remove the next card
-        currentIndex++;
-        console.log("currentIndex: ", currentIndex);
       });
 
-
-      // searchedCards.forEach(cardObj => {
-      //   console.log("cardObj: ", cardObj.name)
-      //   // Loop through each parameter
-      //   arrayParams.forEach(element => {
-      //     // console.log("element: ", element);
-      //     let key;
-      //     let value;
-
-      //     switch (element) {
-      //       case "cmc":
-      //         key = cardObj.cmc;
-      //         value = params.cmc;
-      //         break;
-      //       case "name":
-      //         key = cardObj.name;
-      //         value = params.name
-      //         break;
-      //       case "colors":
-      //         key = cardObj.colors;
-      //         value = params.colors
-      //         break;
-      //       case "rarity":
-      //         key = cardObj.rarity;
-      //         value = params.rarity
-      //         break;
-      //       case "pT":
-      //         key = cardObj.pT;
-      //         value = params.pT
-      //         break;
-      //     }
-
-      //     // console.log("key: ", key);
-      //     // console.log("value: ", value);
-      //     // console.log("card[i]", cardObj)
-      //     // if card.parameter != params.value
-      //     // console.log("element: ", element)
-      //     // console.log("Card: ", key);
-      //     // console.log("Request: ", value);
-      //     if (key != value) {
-      //     console.log("not equal")
-      //       // Remove card from validateCards
-      //       validateCards.splice(counter, 1)
-      //       console.log("validateCards: ", validateCards);
-      //       counter--;
-      //     };
-
-      //     // If key and value are equal
-      //     // if (key === value) {
-      //     //   // Add card to array
-      //     //   validateCards.push(cardObj);
-      //     // }
-      //   })
-      //   counter++;
-      //   console.log("counter: ", counter)
-      //   console.log("searchedCards: ", searchedCards)
-      // });
-
-
-      // console.log("searchedCards: ", searchedCards)
+      colorKey = false;
+      key = null;
+      value = null;
       res.send(response);
     });
 
-})
+});
+
+router.post("/get-all-cards", (req, res)=> {
+  User.find({ username: req.user.username })
+  .then(data => {
+    // Store user cards array in cards
+    let cards = data[0].cards;
+    res.send(cards)
+  });
+});
 
 module.exports = router;

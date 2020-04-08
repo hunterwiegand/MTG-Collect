@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container } from "../components/Grid";
 import axios from 'axios';
 import Card_Layout from "../components/Card_Layout";
+import Search_Form from "../components/Search_Form";
 
 class Collection extends Component {
 
@@ -12,9 +13,7 @@ class Collection extends Component {
     render() {
         return(
             <Container>
-                <Card_Layout
-                    username={this.state.username}>
-                </Card_Layout>
+                <Search_Form></Search_Form>
             </Container>
         )
     }
