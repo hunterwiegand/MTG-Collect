@@ -211,91 +211,94 @@ router.post("/get-cards", (req, res) => {
               console.log("card added because empty")
               searchedCards.push(cards[i])
             }
-          }
+          
         }
+      }
         key = null;
-        value = null;
-      });
-
-      response = searchedCards;
-
-      // Validate each card to verify it meets all parameter restrictions
-      // Loop through each parameter
-      arrayParams.forEach(element => {
-        currentIndex = 0;
-        // Loop through each card
-        console.log("Current arrayParam: ", element);
-        for (i in searchedCards) {
-          console.log(searchedCards.length)
-          let key;
-          let value;
-
-          switch (element) {
-            case "cmc":
-              key = searchedCards[i].cmc;
-              value = params.cmc;
-              break;
-            case "name":
-              key = searchedCards[i].name;
-              value = params.name
-              break;
-            case "colors":
-              key = searchedCards[i].colors;
-              value = params.colors
-              break;
-            case "rarity":
-              key = searchedCards[i].rarity;
-              value = params.rarity
-              break;
-            case "pT":
-              key = searchedCards[i].pT;
-              value = params.pT
-              break;
-          };
-
-          if (element === "colors") {
-            console.log("254* KEY: ", colorKey)
-            if (colorKey) {
-              key = true;
-              value = true;
-            };
-          };
-          console.log(searchedCards[i].name);
-          console.log("261 Key: ", key);
-          console.log("Value: ", value)
-          // If the key is not equal to the value
-          if (key != value) {
-            console.log("Not Equal");
-            console.log("before splice: ", response);
-            console.log("currentIndex: ", currentIndex);
-            // Remove the card from the response array where there currentIndex is
-            response.splice(currentIndex, 1);
-            console.log("Response: ", response);
-            // Set the currentIndex back to to look at the next card after removing this element
-            currentIndex--;
-          };
-          console.log("End of loop");
-          // Move the currentIndex to the right by one, so we can potentially remove the next card
-          currentIndex++;
-          console.log("currentIndex: ", currentIndex);
-        };
-      });
-
-      colorKey = false;
-      key = null;
       value = null;
-      res.send(response);
     });
+
+  response = searchedCards;
+
+  // Validate each card to verify it meets all parameter restrictions
+  // Loop through each parameter
+  arrayParams.forEach(element => {
+    currentIndex = 0;
+    // Loop through each card
+    console.log("Current arrayParam: ", element);
+    for (let i = searchedCards.length -1; i >= 0; i--) {
+      console.log("230: i: ", i);
+      console.log(searchedCards.length)
+      let key;
+      let value;
+
+        switch (element) {
+          case "cmc":
+            key = searchedCards[i].cmc;
+            value = params.cmc;
+            break;
+          case "name":
+            key = searchedCards[i].name;
+            value = params.name
+            break;
+          case "colors":
+            key = searchedCards[i].colors;
+            value = params.colors
+            break;
+          case "rarity":
+            key = searchedCards[i].rarity;
+            value = params.rarity
+            break;
+          case "pT":
+            key = searchedCards[i].pT;
+            value = params.pT
+            break;
+        };
+
+        if (element === "colors") {
+          console.log("254* KEY: ", colorKey)
+          if (colorKey) {
+            key = true;
+            value = true;
+          };
+        };
+        console.log(searchedCards[i].name);
+    
+        console.log("261 Key: ", key);
+        console.log("Value: ", value)
+        // If the key is not equal to the value
+        if (key != value) {
+          console.log("Not Equal");
+          console.log("before splice: ", response);
+          console.log("currentIndex: ", currentIndex);
+          // Remove the card from the response array where there currentIndex is
+          response.splice(currentIndex, 1);
+          console.log("Response: ", response);
+          // Set the currentIndex back to to look at the next card after removing this element
+          currentIndex--;
+        };
+        console.log("End of loop");
+        // Move the currentIndex to the right by one, so we can potentially remove the next card
+        currentIndex++;
+        console.log("currentIndex: ", currentIndex);
+      };
+    });
+
+  colorKey = false;
+  key = null;
+  value = null;
+  res.send(response);
+});
 
 });
 
-router.post("/get-all-cards", (req, res)=> {
+router.post("/get-all-cards", (req, res) => {
   User.find({ username: req.user.username })
-  .then(data => {
-    // Store user cards array in cards
-    let cards = data[0].cards;
-    res.send(cards)
-  });
+    .then(data => {
+      // Store user cards array in cards
+      let cards = data[0].cards;
+      res.send(cards)
+    });
 });
 
 module.exports = router;
