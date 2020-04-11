@@ -129,7 +129,7 @@ router.post("/get-cards", (req, res) => {
 
 
 
-          // console.log("Element: ", element)
+          console.log("Element: ", element)
           // console.log("params.colors: ", params.colors)
           switch (element) {
             case "cmc":
@@ -190,6 +190,7 @@ router.post("/get-cards", (req, res) => {
             case "type_line":
               key = cards[i].type_line;
               value = params.type_line;
+              break;
           }
 
           // If key is equal to value
@@ -211,84 +212,125 @@ router.post("/get-cards", (req, res) => {
               console.log("card added because empty")
               searchedCards.push(cards[i])
             }
-          
+
+          }
         }
-      }
         key = null;
-      value = null;
-    });
+        value = null;
+      });
 
-  response = searchedCards;
+      response = searchedCards;
 
-  // Validate each card to verify it meets all parameter restrictions
-  // Loop through each parameter
-  arrayParams.forEach(element => {
-    currentIndex = 0;
-    // Loop through each card
-    console.log("Current arrayParam: ", element);
-    for (let i = searchedCards.length -1; i >= 0; i--) {
-      console.log("230: i: ", i);
-      console.log(searchedCards.length)
-      let key;
-      let value;
-
-        switch (element) {
-          case "cmc":
-            key = searchedCards[i].cmc;
-            value = params.cmc;
-            break;
-          case "name":
-            key = searchedCards[i].name;
-            value = params.name
-            break;
-          case "colors":
-            key = searchedCards[i].colors;
-            value = params.colors
-            break;
-          case "rarity":
-            key = searchedCards[i].rarity;
-            value = params.rarity
-            break;
-          case "pT":
-            key = searchedCards[i].pT;
-            value = params.pT
-            break;
-        };
-
-        if (element === "colors") {
-          console.log("254* KEY: ", colorKey)
-          if (colorKey) {
-            key = true;
-            value = true;
-          };
-        };
-        console.log(searchedCards[i].name);
-    
-        console.log("261 Key: ", key);
-        console.log("Value: ", value)
-        // If the key is not equal to the value
-        if (key != value) {
-          console.log("Not Equal");
-          console.log("before splice: ", response);
-          console.log("currentIndex: ", currentIndex);
-          // Remove the card from the response array where there currentIndex is
-          response.splice(currentIndex, 1);
-          console.log("Response: ", response);
-          // Set the currentIndex back to to look at the next card after removing this element
+      // Validate each card to verify it meets all parameter restrictions
+      // Loop through each parameter
+      arrayParams.forEach(element => {
+        let currentIndex = searchedCards.length;
+        // Loop through each card
+        console.log("Current arrayParam: ", element);
+        for (let i = searchedCards.length - 1; i >= 0; i--) {
           currentIndex--;
-        };
-        console.log("End of loop");
-        // Move the currentIndex to the right by one, so we can potentially remove the next card
-        currentIndex++;
-        console.log("currentIndex: ", currentIndex);
-      };
-    });
+          console.log("currentIndex: ", currentIndex);
+          console.log("230: i: ", i);
+          console.log(searchedCards.length)
+          let key;
+          let value;
 
-  colorKey = false;
-  key = null;
-  value = null;
-  res.send(response);
-});
+          switch (element) {
+            case "cmc":
+              key = searchedCards[i].cmc;
+              value = params.cmc;
+              break;
+            case "name":
+              key = searchedCards[i].name;
+              value = params.name
+              break;
+            case "colors":
+              // Function to see if instance of arrays are equal
+              Array.prototype.equals = function (array) {
+                // if the other array is a falsy value, return
+                if (!array)
+                  return false;
+
+                // compare lengths - can save a lot of time 
+                if (this.length != array.length)
+                  return false;
+
+                for (var i = 0, l = this.length; i < l; i++) {
+                  // Check if we have nested arrays
+                  if (this[i] instanceof Array && array[i] instanceof Array) {
+                    // recurse into the nested arrays
+                    if (!this[i].equals(array[i]))
+                      return false;
+                  }
+                  else if (this[i] != array[i]) {
+                    // Warning - two different object instances will never be equal: {x:20} != {x:20}
+                    return false;
+                  }
+                }
+                return true;
+              };
+              key = searchedCards[i].colors;
+              value = params.colors;
+              console.log("160*  key:", key);
+              console.log(typeof key)
+              console.log("160*  value:", value);
+              console.log(typeof value)
+              if (i <= cards.length) {
+                if (key.equals(value)) {
+                  key = true;
+                  value = true;
+                  colorKey = true;
+                }
+              }
+              break;
+            case "rarity":
+              key = searchedCards[i].rarity;
+              value = params.rarity
+              break;
+            case "pT":
+              key = searchedCards[i].pT;
+              value = params.pT
+              break;
+            case "type_line":
+              key = cards[i].type_line;
+              value = params.type_line;
+              break;
+          };
+
+          // if (element === "colors") {
+          //   console.log("254* KEY: ", colorKey)
+          //   if (colorKey) {
+          //     key = true;
+          //     value = true;
+          //   };
+          // };
+          console.log(searchedCards[i].name);
+
+          console.log("261 Key: ", key);
+          console.log("Value: ", value)
+          // If the key is not equal to the value
+          if (key != value) {
+            console.log("Not Equal");
+            console.log("before splice: ", response);
+            console.log("currentIndex: ", currentIndex);
+            // Remove the card from the response array where there currentIndex is
+            response.splice(currentIndex, 1);
+            console.log("Response: ", response);
+            // Set the currentIndex back to to look at the next card after removing this element
+            currentIndex++;
+          };
+          console.log("End of loop");
+          // Move the currentIndex to the right by one, so we can potentially remove the next card
+          currentIndex--;
+          console.log("currentIndex: ", currentIndex);
+        };
+      });
+
+      colorKey = false;
+      key = null;
+      value = null;
+      res.send(response);
+    });
 
 });
 

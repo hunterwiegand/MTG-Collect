@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Container } from "../Grid";
+import { Table } from "react-bootstrap";
 import axios from "axios";
 import Card_Layout from "../Card_Layout";
+import "./styles.css"
 
 class Search_Form extends Component {
     constructor(props) {
@@ -14,7 +15,14 @@ class Search_Form extends Component {
             rarity: null,
             pT: null,
             cmc: null,
-            cards: []
+            cards: [],
+            colorParam: {
+                "B": false,
+                "W": false,
+                "R": false,
+                "U": false,
+                "G": false
+            }
         };
     };
 
@@ -61,6 +69,7 @@ class Search_Form extends Component {
                 })
             };
         } else if (event.target.name === "colors") {
+            console.log("colors")
             let colors = [];
             colors.push(event.target.value.replace(/\s/g, ''))
             this.setState({
@@ -72,12 +81,18 @@ class Search_Form extends Component {
     // Function for when the user submits the form
     handleFormSubmit = event => {
         event.preventDefault();
+        // console.log("colors:", this.state.colorParam)
+        let colors = this.concatColors(this.state.colorParam);
+        if (colors.length === 0) {
+            console.log("empty array")
+            colors = null;
+        };
         this.setState({
             cards: []
         });
         this.findCards({
             name: this.state.name,
-            colors: this.state.colors,
+            colors: colors,
             type_line: this.state.type_line,
             rarity: this.state.rarity,
             pT: this.state.pT,
@@ -89,7 +104,14 @@ class Search_Form extends Component {
             type_line: null,
             rarity: null,
             pT: null,
-            cmc: null
+            cmc: null,
+            colorParam: {
+                "B": false,
+                "W": false,
+                "R": false,
+                "U": false,
+                "G": false
+            }
         })
         this.clearForm();
     };
@@ -124,80 +146,149 @@ class Search_Form extends Component {
                 // console.log(cards)
                 this.setState({ cards: cards });
             });
+    };
+
+    renderColorPicks() {
+        let colors = ["B", "W", "R", "U", "G"];
+        return colors.map((color, i) => {
+            return (
+                <label key={i}>
+                    {color}
+                    <input
+                        type="checkbox"
+                        name={color}
+                        onChange={this.onColorChange.bind(this)}
+                        value={this.state.colorParam[color]}
+                    />
+                </label>
+            );
+        });
+    };
+
+    onColorChange(e) {
+        const val = e.target.checked;
+        const name = e.target.name;
+        console.log("colorChange: ", name, val)
+        let updateColorParams = Object.assign({}, this.state.colorParam, { [name]: val })
+        this.setState({
+            colorParam: updateColorParams
+        });
+    };
+
+    concatColors(colors) {
+        console.log("colors", colors);
+        let concatColors = [];
+        /*
+        colors = {
+            B : false
+            W : false
+            R : true
+            U : false
+            G : false
+        } 
+        */
+    //    for (let i in colors) {
+    //        console.log("test: ", colors[i])
+    //        if (colors[i]) {
+    //            console.log()
+    //        }
+    //    };
+
+       for (let [key, value] of Object.entries(colors)) {
+        if (value) {
+            concatColors.push(key)
+        };
+      };
+      return concatColors;
     }
+
+
 
     render() {
         return (
-            <Container>
-                <form id="search-cards-form">
-                    <div className="form-group">
-                        <label htmlFor="Query">
-                            <strong>Card Name</strong>
-                        </label>
-                        <input
-                            className="form-control"
-                            id="name"
-                            type="text"
-                            value={this.state.name}
-                            name="name"
-                            onChange={this.handleInputChange}
-                        />
-                        <label htmlFor="Query">
-                            <strong>Rarity</strong>
-                        </label>
-                        <input
-                            className="form-control"
-                            id="rarity"
-                            type="text"
-                            value={this.state.rarity}
-                            name="rarity"
-                            onChange={this.handleInputChange}
-                        />
-                        <label htmlFor="Query">
-                            <strong>Color(s)</strong>
-                        </label>
-                        <input
-                            className="form-control"
-                            id="rarity"
-                            type="text"
-                            value={this.state.colors}
-                            name="colors"
-                            onChange={this.handleInputChange}
-                        />
-                        <label htmlFor="Query">
-                            <strong>Type</strong>
-                        </label>
-                        <input
-                            className="form-control"
-                            id="type"
-                            type="text"
-                            value={this.state.type_line}
-                            name="type_line"
-                            onChange={this.handleInputChange}
-                        />
-                        <label htmlFor="Query">
-                            <strong>Converted Mana Cost</strong>
-                        </label>
-                        <input
-                            className="form-control"
-                            id="cmc"
-                            type="number"
-                            value={this.state.cmc}
-                            name="cmc"
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div className="pull-right">
-                        <button
-                            onClick={this.handleFormSubmit}
-                            type="button"
-                            className="btn btn-lg btn-danger float-right"
-                        >
-                            Search
-        </button>
+            <div className="container">
+                <div className="row">
+                    <div className="col-sm-4">
+                        <form id="search-cards-form">
+                            <div className="form-group">
+                                <div className="parameter">
+                                    <label htmlFor="Query">
+                                        <strong>Card Name</strong>
+                                    </label>
+                                    <input
+                                        className="form-control"
+                                        id="name"
+                                        type="text"
+                                        value={this.state.name}
+                                        name="name"
+                                        onChange={this.handleInputChange}
+                                    />
+                                </div>
+                                <div className="parameter">
+                                    <label htmlFor="Query">
+                                        <strong>Rarity</strong>
+                                        <select className="form-control" value={this.state.rarity} onChange={this.handleInputChange} name="rarity">
+                                            <option value={null}>Any</option>
+                                            <option value="common">Common</option>
+                                            <option value="uncommon">Uncommon</option>
+                                            <option value="rare">Rare</option>
+                                            <option value="mythic">Mythic</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div className="parameter">
+                                    <label htmlFor="Query">
+                                        <strong>Color(s)</strong>
+                                        {this.renderColorPicks()}
+                                    </label>
+                                </div>
 
+
+
+
+                                <div className="parameter">
+                                    <label htmlFor="Query">
+                                        <strong>Type</strong>
+                                        <select className="form-control" value={this.state.type_line} onChange={this.handleInputChange} name="type_line">
+                                            <option value={null}>Any</option>
+                                            <option value="Land">Land</option>
+                                            <option value="Creature">Creature</option>
+                                            <option value="Artifact">Artifact</option>
+                                            <option value="Enchantment">Enchantment</option>
+                                            <option value="Planeswalker">Planeswalker</option>
+                                            <option value="Instant">Instant</option>
+                                        </select>
+                                    </label>
+                                </div>
+
+
+
+
+
+                                <div className="parameter">
+                                    <label htmlFor="Query">
+                                        <strong>Converted Mana Cost</strong>
+                                    </label>
+                                    <input
+                                        className="form-control"
+                                        id="cmc"
+                                        type="number"
+                                        value={this.state.cmc}
+                                        name="cmc"
+                                        onChange={this.handleInputChange}
+                                    />
+                                </div>
+                            </div>
+                            <div className="pull-right">
+                                <button
+                                    onClick={this.handleFormSubmit}
+                                    type="button"
+                                    className="btn btn-lg btn-danger float-right"
+                                >Search</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
                 <button
                     onClick={this.handleAllCards}
                     type="button"
@@ -205,15 +296,17 @@ class Search_Form extends Component {
                 >
                     Search All Cards
         </button>
-                {this.state.cards.length ? (
-                    <Card_Layout
-                        cards={this.state.cards}
-                    ></Card_Layout>
-                ) : (
-                        <span>Search your collection</span>
-                    )}
+                {
+                    this.state.cards.length ? (
+                        <Card_Layout
+                            cards={this.state.cards}
+                        ></Card_Layout>
+                    ) : (
+                            <span>Search your collection</span>
+                        )
+                }
 
-            </Container>
+            </div>
         )
     }
 }
