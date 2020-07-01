@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Route, Link } from 'react-router-dom'
+import Greeting from "../components/Greeting"
 
 class Home extends Component {
     constructor() {
@@ -27,7 +28,10 @@ class Home extends Component {
                     </Link>
                 </section>
                 ) : (
-                        <h1>Log in!</h1>
+                        <div>
+                        {/* This is the componenet to load the welcome message */}
+                        <Greeting></Greeting>
+                        </div>
                     )
                 }
                 
