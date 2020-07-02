@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import Greeting from "../components/Greeting"
-import Home_Name from "../components/Home_Nav"
 import Home_Nav from '../components/Home_Nav'
 
 class Home extends Component {
@@ -18,7 +17,9 @@ class Home extends Component {
                 {/* If the user is logged in, show this */}
                 {loggedIn ? (
                     // Component to showcase our three options from the home screen
+                  
                     <Home_Nav></Home_Nav>
+                  
                     
                 // If the user is not logged in, show this
                 ) : (
@@ -29,7 +30,7 @@ class Home extends Component {
                     )
                 }
                 
-                The user is <b>{loggedIn ? "currently" :  "not"}</b> logged in
+                {/* The user is <b>{loggedIn ? "currently" :  "not"}</b> logged in */}
             </div>
 
             

@@ -1,0 +1,20 @@
+.collection {
+    background-color: aquamarine;
+    height: 94vh;
+}
+
+.add-cards {
+    background: #f0e68c;
+}
+
+.search-cards {
+    background-color: coral;
+}
+
+.link {
+    text-align: center;
+}
+
+.card-back {
+    display: inline;
+}
