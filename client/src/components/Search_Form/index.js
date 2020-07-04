@@ -283,7 +283,7 @@ class Search_Form extends Component {
                                 <button
                                     onClick={this.handleFormSubmit}
                                     type="button"
-                                    className="btn btn-lg btn-danger float-right"
+                                    className="btn btn-lg btn-primary float-right"
                                 >Search</button>
                             </div>
                         </form>
@@ -292,7 +292,7 @@ class Search_Form extends Component {
                 <button
                     onClick={this.handleAllCards}
                     type="button"
-                    className="btn btn-lg btn-danger float-right"
+                    className="btn btn-lg btn-primary float-right"
                 >
                     Search All Cards
         </button>

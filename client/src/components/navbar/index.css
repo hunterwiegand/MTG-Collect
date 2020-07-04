@@ -4,13 +4,13 @@
     align-items: left;
     justify-content: center;
     font-size: calc(6px + 2vmin);
-    color: white;
+    background-color: black;
+    text-align: center;
   }
   .btn-link {
-    color: #61dafb;
     margin-right: 2%;
   }
 
-  .btn-link:visited {
-      color:  #61dafb
+  .text-secondary {
+    color: #a5a5af
   }

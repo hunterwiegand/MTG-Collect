@@ -1,0 +1,37 @@
+.collection {
+    height: 94vh;
+    background-color: #015249;
+}
+
+.add-cards {
+    background: #57bc90;
+}
+
+.search-cards {
+    background-color: #015249;
+}
+
+.link {
+    text-align: center;
+}
+
+.card-back {
+    display: inline;
+}
+
+
+/*  
+Purple/Baysh scheme
+- #94618E - Grape
+- #49274A - Eggplant
+- #F4DECB - Sand
+- #F8EEE7 - Shell
+*/
+
+/* 
+Aquaish scheme
+#77c9d4 - Feather
+#57BC90 - Marine
+#015249 - Forest
+#a5a5af - Sleek Grey
+*/
