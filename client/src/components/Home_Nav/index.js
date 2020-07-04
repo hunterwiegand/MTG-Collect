@@ -16,7 +16,7 @@ class Home_Nav extends Component {
                     <div className="col collection link">
                         <div className="row ">
                             <div className="col">
-                                <h1 className="text-secondary mt-5">View Collection</h1>
+                                <h1 className="mt-5">View Collection</h1>
                                 <div className="col mt-5">
                                     <Link to="/collection" className="btn btn-link text-secondary">
                                         <img className="card-back" src={cardBack} />
@@ -28,7 +28,7 @@ class Home_Nav extends Component {
                     <div className="col add-cards link">
                         <div className="row ">
                             <div className="col">
-                                <h1 className="text-secondary mt-5">Add Cards</h1>
+                                <h1 className="mt-5">Add Cards</h1>
                                 <div className="col mt-5">
                                     <Link to="/add-cards" className="btn btn-link text-secondary">
                                         <img className="card-back" src={cardBack} />
@@ -40,7 +40,7 @@ class Home_Nav extends Component {
                     <div className="col search-cards link">
                         <div className="row ">
                             <div className="col">
-                                <h1 className="text-secondary mt-5">Search Cards</h1>
+                                <h1 className="mt-5">Search Cards</h1>
                                 <div className="col mt-5">
                                     <Link to="/search-cards" className="btn btn-link text-secondary">
                                         <img className="card-back" src={cardBack} />

@@ -27,7 +27,7 @@ function AddCards({
                 <button
                     onClick={handleAddSubmit}
                     type="button"
-                    className="btn btn-lg btn-danger float-right"
+                    className="btn btn-lg btn-primary float-right"
                 >
                     Add Card
   </button>
