@@ -41,7 +41,7 @@ class Card_Layout extends Component {
         let quantity = this.getQuantity(cardUrl);
 
         return (
-            <div className="card">
+            <div className="card ">
                 <img src={cardUrl} quantity={quantity} />
                 <span quantity={quantity} onClick={this.changeQuantity}>{quantity}</span>
             </div>

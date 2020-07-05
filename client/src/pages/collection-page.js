@@ -12,9 +12,7 @@ class Collection extends Component {
 
     render() {
         return(
-            <Container>
                 <Search_Form></Search_Form>
-            </Container>
         )
     }
 }

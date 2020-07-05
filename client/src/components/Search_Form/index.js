@@ -187,19 +187,19 @@ class Search_Form extends Component {
             G : false
         } 
         */
-    //    for (let i in colors) {
-    //        console.log("test: ", colors[i])
-    //        if (colors[i]) {
-    //            console.log()
-    //        }
-    //    };
+        //    for (let i in colors) {
+        //        console.log("test: ", colors[i])
+        //        if (colors[i]) {
+        //            console.log()
+        //        }
+        //    };
 
-       for (let [key, value] of Object.entries(colors)) {
-        if (value) {
-            concatColors.push(key)
+        for (let [key, value] of Object.entries(colors)) {
+            if (value) {
+                concatColors.push(key)
+            };
         };
-      };
-      return concatColors;
+        return concatColors;
     }
 
 
@@ -288,6 +288,20 @@ class Search_Form extends Component {
                             </div>
                         </form>
                     </div>
+                    <div className="col-sm-8">
+                        {
+                            this.state.cards.length ? (
+                                <Card_Layout
+                                    cards={this.state.cards}
+                                ></Card_Layout>
+                            ) : (
+                                    <span>Search your collection</span>
+                                )
+                        }
+                    </div>
+
+
+
                 </div>
                 <button
                     onClick={this.handleAllCards}
@@ -296,15 +310,7 @@ class Search_Form extends Component {
                 >
                     Search All Cards
         </button>
-                {
-                    this.state.cards.length ? (
-                        <Card_Layout
-                            cards={this.state.cards}
-                        ></Card_Layout>
-                    ) : (
-                            <span>Search your collection</span>
-                        )
-                }
+
 
             </div>
         )
