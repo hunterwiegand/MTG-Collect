@@ -1,7 +1,9 @@
-#search-cards-form {
-    
-};
+.btn-primary:hover {
+    color: black;
+    background-color: #57bc90;
+    border-color: black;
+}
 
-.parameter {
-    float: left;
+.card {
+    margin: 1%;
 }
