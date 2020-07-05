@@ -42,7 +42,7 @@ class Card_Layout extends Component {
 
         return (
             <div className="card ">
-                <img src={cardUrl} quantity={quantity} />
+                <img src={cardUrl} quantity={quantity} className="collection-img"/>
                 <span quantity={quantity} onClick={this.changeQuantity}>{quantity}</span>
             </div>
         );
