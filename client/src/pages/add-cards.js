@@ -3,6 +3,7 @@ import { Container } from "../components/Grid";
 import Form from "../components/Form"
 import AddCards from "../components/AddCards"
 import axios from 'axios';
+import "./styles.css"
 
 class Add_Cards extends Component {
 
@@ -81,7 +82,7 @@ class Add_Cards extends Component {
             if (response.data === "No Match Found" || response.data === "No cards yet") {
                 console.log("card send to DB");
                 this.setState({
-                    message: "Card Added, search another",
+                    message: "Search another!",
                     wasAdded: true
                 });
             };
@@ -143,7 +144,9 @@ class Add_Cards extends Component {
             cmc: "",
             imageUrl: "",
             message: "Search another card!"
-        })
+        });
+
+        document.getElementById("test").setAttribute("class", "");
     };
 
     // function used to make changes to the state
@@ -176,9 +179,9 @@ class Add_Cards extends Component {
             <Container>
 
                 {wasAdded ? (
-                    <div>Card was added</div>
+                    <div className="card-added-message">Card was Added</div>
                 ) : (
-                    <div>Card was already Added</div>
+                    <div  id="test" className="card-added-message">Card was already Added</div>
                 )}
                 
 
