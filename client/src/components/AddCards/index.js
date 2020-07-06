@@ -7,7 +7,7 @@ function AddCards({
     handleAddSubmit
 }) {
     return (
-        <form>
+        <form onSubmit={handleAddSubmit}>
             <div className="form-group">
 
                 {/* Image tag to show card image, this src url will be imported from when the user searched the card */}
@@ -25,8 +25,7 @@ function AddCards({
             </div>
             <div className="pull-right">
                 <button
-                    onClick={handleAddSubmit}
-                    type="button"
+                    type="submit"
                     className="btn btn-lg btn-primary float-right"
                 >
                     Add Card

@@ -91,7 +91,7 @@ class Search_Form extends Component {
             cards: []
         });
         this.findCards({
-            name: this.state.name,
+            name: this.capitalizeFirstLetter(this.state.name),
             colors: colors,
             type_line: this.state.type_line,
             rarity: this.state.rarity,
@@ -202,6 +202,9 @@ class Search_Form extends Component {
         return concatColors;
     }
 
+    capitalizeFirstLetter(string) { 
+        return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+      } 
 
 
     render() {

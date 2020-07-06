@@ -19,6 +19,14 @@
     display: inline;
 }
 
+.label {
+    color: black;
+}
+
+.card-added-message {
+    visibility: hidden;
+}
+
 
 /*  
 Purple/Baysh scheme
